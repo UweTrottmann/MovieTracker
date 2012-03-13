@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello">Hello World, MoviesActivity!</string>
-    <string name="app_name">SeriesGuideMovies</string>
+    <string name="app_name">SeriesGuide movies</string>
+    
+    <string name="description_poster">Movie poster</string>
+    
+    <string name="trending">Trending</string>
+    <string name="released">Released</string>
+    <string name="recommended">Recommended</string>
+    <string name="library">Library</string>
+    <string name="search_hint">Search movies</string>
+    <string name="menu_update">Update</string>
+    <string name="powered_by_trakt">powered by trakt.tv</string>
 
 </resources>
