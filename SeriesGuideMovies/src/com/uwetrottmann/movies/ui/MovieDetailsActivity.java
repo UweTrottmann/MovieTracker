@@ -2,13 +2,12 @@
 package com.uwetrottmann.movies.ui;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.uwetrottmann.movies.R;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-public class MovieDetailsActivity extends SherlockFragmentActivity {
+public class MovieDetailsActivity extends BaseActivity {
 
     private Fragment mFragment;
 
