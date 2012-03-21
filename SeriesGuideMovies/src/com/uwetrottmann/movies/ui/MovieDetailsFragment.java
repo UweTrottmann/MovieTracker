@@ -123,12 +123,12 @@ public class MovieDetailsFragment extends SherlockListFragment implements
             ((TextView) view.findViewById(R.id.description)).setText(item.overview);
             ((TextView) view.findViewById(R.id.lovevalue)).setText(item.ratings.percentage + "%");
             ((TextView) view.findViewById(R.id.lovevotes)).setText(getContext().getResources()
-                    .getQuantityString(R.plurals.votes, item.ratings.votes));
+                    .getQuantityString(R.plurals.votes, item.ratings.votes, item.ratings.votes));
 
             ImageView imageView = (ImageView) view.findViewById(R.id.fanart);
             if (item.images.fanart != null) {
                 String url = item.images.fanart.substring(0, item.images.fanart.length() - 4)
-                        + "-218.jpg";
+                        + "-940.jpg";
                 mImageDownloader.download(url, imageView, false);
             }
 
