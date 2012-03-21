@@ -41,7 +41,7 @@ public class MoviesActivity extends SherlockFragmentActivity {
         ActionBar.Tab trendingTab = actionBar.newTab().setText(R.string.trending);
         Bundle args = new Bundle();
         args.putInt(TraktMoviesLoader.InitBundle.CATEGORY, TraktCategory.TRENDING.index());
-        mTabsAdapter.addTab(trendingTab, TraktMoviesFragment.class, args);
+        mTabsAdapter.addTab(trendingTab, MoviesFragment.class, args);
     }
 
     @Override
