@@ -10,6 +10,7 @@ import com.uwetrottmann.movies.util.ImageDownloader;
 import com.uwetrottmann.movies.util.Utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.AsyncTaskLoader;
@@ -63,6 +64,8 @@ public class TraktMoviesFragment extends SherlockListFragment implements
 
     private TraktMoviesAdapter mAdapter;
 
+    private boolean mMultiPane;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -80,6 +83,7 @@ public class TraktMoviesFragment extends SherlockListFragment implements
         int layoutPadding = (int) (10 * scale + 0.5f);
         int defaultPadding = (int) (8 * scale + 0.5f);
         list.setPadding(layoutPadding, layoutPadding, layoutPadding, defaultPadding);
+        list.setFastScrollEnabled(true);
 
         // nag about no connectivity
         if (!Utils.isNetworkConnected(getActivity())) {
@@ -89,6 +93,21 @@ public class TraktMoviesFragment extends SherlockListFragment implements
             setEmptyText(getString(R.string.movies_empty));
             setListShown(false);
             getLoaderManager().initLoader(MOVIES_LOADER_ID, getArguments(), this);
+        }
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        Movie movie = (Movie) l.getItemAtPosition(position);
+        if (movie != null && movie.imdbId != null) {
+            if (mMultiPane) {
+                MovieDetailsFragment newFragment = MovieDetailsFragment.newInstance(movie.imdbId);
+                // TODO
+            } else {
+                Intent i = new Intent(getSherlockActivity(), MovieDetailsActivity.class);
+                i.putExtra(MovieDetailsFragment.InitBundle.IMDBID, movie.imdbId);
+                startActivity(i);
+            }
         }
     }
 
