@@ -11,10 +11,12 @@ import com.uwetrottmann.movies.util.Utils;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -50,7 +52,7 @@ public class MovieDetailsFragment extends SherlockListFragment implements
         super.onActivityCreated(savedInstanceState);
 
         // set list adapter
-        mAdapter = new TraktMovieSummaryAdapter(getSherlockActivity());
+        mAdapter = new TraktMovieSummaryAdapter(getSherlockActivity(), getFragmentManager());
         setListAdapter(mAdapter);
 
         // style list view
@@ -100,11 +102,14 @@ public class MovieDetailsFragment extends SherlockListFragment implements
 
         private ImageDownloader mImageDownloader;
 
-        public TraktMovieSummaryAdapter(Context context) {
+        private FragmentManager mFm;
+
+        public TraktMovieSummaryAdapter(Context context, FragmentManager fm) {
             super(context, LAYOUT);
             mLayoutInflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             mImageDownloader = ImageDownloader.getInstance(context);
+            mFm = fm;
         }
 
         @Override
@@ -124,6 +129,14 @@ public class MovieDetailsFragment extends SherlockListFragment implements
             ((TextView) view.findViewById(R.id.lovevalue)).setText(item.ratings.percentage + "%");
             ((TextView) view.findViewById(R.id.lovevotes)).setText(getContext().getResources()
                     .getQuantityString(R.plurals.votes, item.ratings.votes, item.ratings.votes));
+
+            view.findViewById(R.id.checkinButton).setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CheckInDialogFragment dialog = CheckInDialogFragment.newInstance();
+                    dialog.show(mFm, "checkin-dialog");
+                }
+            });
 
             ImageView imageView = (ImageView) view.findViewById(R.id.fanart);
             if (item.images.fanart != null) {

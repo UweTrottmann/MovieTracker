@@ -11,12 +11,18 @@
     <string name="menu_update">Update</string>
     <string name="powered_by_trakt">powered by trakt.tv</string>
     <string name="offline">No network connectivity. Try again later.</string>
-    
+    <string name="trakt">trakt</string>
+    <string name="getglue">GetGlue</string>
+
     <!-- Movie lists -->
     <string name="movies_empty">No movies here.</string>
-    
+
     <!-- Movie details -->
     <string name="details_empty">No details here.</string>
+    <string name="checkin">Check In</string>
+
+    <!-- Check Ins -->
+    <string name="checkin_hint">Type a message (optional)</string>
 
     <!-- Ratings -->
     <plurals name="votes">
