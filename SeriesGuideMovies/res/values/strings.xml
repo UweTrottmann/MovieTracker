@@ -10,6 +10,10 @@
     <string name="search_hint">Search movies</string>
     <string name="menu_update">Update</string>
     <string name="powered_by_trakt">powered by trakt.tv</string>
+    <string name="offline">No network connectivity. Try again later.</string>
+    
+    <!-- Movie lists -->
+    <string name="movies_empty">No movies here.</string>
 
     <!-- Ratings -->
     <plurals name="votes">
