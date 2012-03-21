@@ -2,15 +2,15 @@
 package com.uwetrottmann.movies.ui;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.uwetrottmann.movies.R;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
 public class MovieDetailsActivity extends SherlockFragmentActivity {
 
-    private SherlockFragment mFragment;
+    private Fragment mFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

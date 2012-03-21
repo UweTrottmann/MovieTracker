@@ -6,8 +6,8 @@ import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.uwetrottmann.movies.R;
-import com.uwetrottmann.movies.ui.TraktMoviesFragment.InitBundle;
-import com.uwetrottmann.movies.ui.TraktMoviesFragment.TraktCategory;
+import com.uwetrottmann.movies.util.TraktMoviesLoader;
+import com.uwetrottmann.movies.util.TraktMoviesLoader.TraktCategory;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -40,7 +40,7 @@ public class MoviesActivity extends SherlockFragmentActivity {
 
         ActionBar.Tab trendingTab = actionBar.newTab().setText(R.string.trending);
         Bundle args = new Bundle();
-        args.putInt(InitBundle.CATEGORY, TraktCategory.TRENDING.index());
+        args.putInt(TraktMoviesLoader.InitBundle.CATEGORY, TraktCategory.TRENDING.index());
         mTabsAdapter.addTab(trendingTab, TraktMoviesFragment.class, args);
     }
 

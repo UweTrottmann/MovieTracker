@@ -14,6 +14,9 @@
     
     <!-- Movie lists -->
     <string name="movies_empty">No movies here.</string>
+    
+    <!-- Movie details -->
+    <string name="details_empty">No details here.</string>
 
     <!-- Ratings -->
     <plurals name="votes">
