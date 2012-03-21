@@ -12,6 +12,7 @@ import com.uwetrottmann.movies.util.Utils;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -94,6 +95,9 @@ public class TraktMoviesFragment extends SherlockListFragment implements
             setListShown(false);
             getLoaderManager().initLoader(MOVIES_LOADER_ID, getArguments(), this);
         }
+
+        View detailsFragment = getSherlockActivity().findViewById(R.id.fragment);
+        mMultiPane = detailsFragment != null && detailsFragment.getVisibility() == View.VISIBLE;
     }
 
     @Override
@@ -101,8 +105,20 @@ public class TraktMoviesFragment extends SherlockListFragment implements
         Movie movie = (Movie) l.getItemAtPosition(position);
         if (movie != null && movie.imdbId != null) {
             if (mMultiPane) {
-                MovieDetailsFragment newFragment = MovieDetailsFragment.newInstance(movie.imdbId);
-                // TODO
+                // Check if fragment is shown, create new if needed.
+                MovieDetailsFragment fragment = (MovieDetailsFragment) getFragmentManager()
+                        .findFragmentById(R.id.fragment);
+                if (fragment == null) {
+                    // Make new fragment to show this selection.
+                    fragment = MovieDetailsFragment.newInstance(movie.imdbId);
+
+                    // Execute a transaction, replacing any existing
+                    // fragment with this one inside the frame.
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.fragment, fragment);
+                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                    ft.commit();
+                }
             } else {
                 Intent i = new Intent(getSherlockActivity(), MovieDetailsActivity.class);
                 i.putExtra(MovieDetailsFragment.InitBundle.IMDBID, movie.imdbId);
