@@ -72,33 +72,47 @@
         <LinearLayout
             android:id="@+id/buttonbar"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_below="@+id/traktrating"
             android:layout_marginBottom="@dimen/default_padding" >
 
             <Button
                 android:id="@+id/checkinButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/checkin" />
-
-            <ImageButton
-                android:id="@+id/imageButton1"
-                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:nextFocusLeft="@+id/calendarButton"
+                android:text="@string/checkin" />
+
+            <ImageButton
+                android:id="@+id/watchedButton"
+                android:layout_width="48dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/list_selector_holo_dark"
+                android:contentDescription="@string/seen"
+                android:paddingLeft="@dimen/default_padding"
+                android:paddingRight="@dimen/default_padding"
                 android:src="@drawable/ic_trakt_seen" />
 
-            <Button
-                android:id="@+id/button2"
+            <ImageButton
+                android:id="@+id/collectedButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Button" />
+                android:layout_height="match_parent"
+                android:background="@drawable/list_selector_holo_dark"
+                android:contentDescription="@string/collect"
+                android:paddingLeft="@dimen/default_padding"
+                android:paddingRight="@dimen/default_padding"
+                android:src="@drawable/ic_action_collect" />
 
-            <Button
-                android:id="@+id/button3"
+            <ImageButton
+                android:id="@+id/calendarButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Button" />
+                android:layout_height="match_parent"
+                android:background="@drawable/list_selector_holo_dark"
+                android:contentDescription="@string/addtocalendar"
+                android:nextFocusRight="@+id/checkinButton"
+                android:paddingLeft="@dimen/default_padding"
+                android:paddingRight="@dimen/default_padding"
+                android:src="@drawable/ic_action_calendar" />
         </LinearLayout>
 
         <TextView
