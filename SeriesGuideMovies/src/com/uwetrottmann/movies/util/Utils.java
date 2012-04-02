@@ -69,6 +69,15 @@ public class Utils {
         return false;
     }
 
+    public static boolean isTraktCredentialsValid(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context
+                .getApplicationContext());
+        String username = prefs.getString(AppPreferences.KEY_TRAKTUSER, "");
+        String password = prefs.getString(AppPreferences.KEY_TRAKTPWD, "");
+
+        return (!username.equals("") && !password.equals(""));
+    }
+
     public static void copyFile(File src, File dst) throws IOException {
         FileChannel inChannel = new FileInputStream(src).getChannel();
         FileChannel outChannel = new FileOutputStream(dst).getChannel();

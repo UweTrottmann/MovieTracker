@@ -10,6 +10,7 @@ import com.uwetrottmann.movies.ui.MovieDetailsFragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.AsyncTaskLoader;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +22,8 @@ public class TraktMoviesLoader extends AsyncTaskLoader<List<Movie>> {
     public interface InitBundle {
         String CATEGORY = "category";
     }
+
+    private static final String TAG = "TraktMoviesLoader";
 
     private List<Movie> mData;
 
@@ -35,11 +38,24 @@ public class TraktMoviesLoader extends AsyncTaskLoader<List<Movie>> {
     public List<Movie> loadInBackground() {
         TraktCategory category = TraktCategory.fromValue(mArgs.getInt(InitBundle.CATEGORY));
         try {
-            ServiceManager serviceManager = Utils.getServiceManager(getContext());
+            // if possible get an auth data so we can return additional
+            // information (seen, checkins, etc.)
+            ServiceManager serviceManager;
+            if (Utils.isTraktCredentialsValid(getContext())) {
+                serviceManager = Utils.getServiceManagerWithAuth(getContext(), false);
+            } else {
+                serviceManager = Utils.getServiceManager(getContext());
+            }
 
             switch (category) {
                 case TRENDING: {
                     return serviceManager.movieService().trending().fire();
+                }
+                case WATCHLIST: {
+                    // there will always be a username as the fragment using
+                    // this is only shown with valid credentials
+                    return serviceManager.userService()
+                            .watchlistMovies(Utils.getTraktUsername(getContext())).fire();
                 }
                 case SUMMARY: {
                     // will just return a single item
@@ -51,9 +67,14 @@ public class TraktMoviesLoader extends AsyncTaskLoader<List<Movie>> {
                     return list;
                 }
             }
-        } catch (TraktException te) {
+        } catch (TraktException e) {
+            Log.w(TAG, e);
             return null;
-        } catch (ApiException ae) {
+        } catch (ApiException e) {
+            Log.w(TAG, e);
+            return null;
+        } catch (Exception e) {
+            Log.w(TAG, e);
             return null;
         }
 
@@ -143,7 +164,7 @@ public class TraktMoviesLoader extends AsyncTaskLoader<List<Movie>> {
     }
 
     public enum TraktCategory {
-        TRENDING(0), SUMMARY(1);
+        TRENDING(0), SUMMARY(1), WATCHLIST(2);
 
         private final int index;
 

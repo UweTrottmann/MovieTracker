@@ -8,6 +8,7 @@ import com.actionbarsherlock.view.Menu;
 import com.uwetrottmann.movies.R;
 import com.uwetrottmann.movies.util.TraktMoviesLoader;
 import com.uwetrottmann.movies.util.TraktMoviesLoader.TraktCategory;
+import com.uwetrottmann.movies.util.Utils;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -39,9 +40,17 @@ public class MoviesActivity extends SherlockFragmentActivity {
         mTabsAdapter = new TabsAdapter(this, actionBar, mViewPager);
 
         ActionBar.Tab trendingTab = actionBar.newTab().setText(R.string.trending);
-        Bundle args = new Bundle();
-        args.putInt(TraktMoviesLoader.InitBundle.CATEGORY, TraktCategory.TRENDING.index());
-        mTabsAdapter.addTab(trendingTab, MoviesFragment.class, args);
+        Bundle trendingArgs = new Bundle();
+        trendingArgs.putInt(TraktMoviesLoader.InitBundle.CATEGORY, TraktCategory.TRENDING.index());
+        mTabsAdapter.addTab(trendingTab, MoviesFragment.class, trendingArgs);
+
+        if (Utils.isTraktCredentialsValid(this)) {
+            ActionBar.Tab watchlistTab = actionBar.newTab().setText(R.string.watchlist);
+            Bundle watchlistArgs = new Bundle();
+            watchlistArgs.putInt(TraktMoviesLoader.InitBundle.CATEGORY,
+                    TraktCategory.WATCHLIST.index());
+            mTabsAdapter.addTab(watchlistTab, MoviesFragment.class, watchlistArgs);
+        }
     }
 
     @Override
