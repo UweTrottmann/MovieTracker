@@ -6,6 +6,7 @@ import com.jakewharton.trakt.entities.Movie;
 import com.uwetrottmann.movies.R;
 import com.uwetrottmann.movies.util.ImageDownloader;
 import com.uwetrottmann.movies.util.TraktMoviesLoader;
+import com.uwetrottmann.movies.util.TraktMoviesLoader.TraktCategory;
 import com.uwetrottmann.movies.util.Utils;
 
 import android.content.Context;
@@ -32,6 +33,8 @@ public class MoviesFragment extends SherlockListFragment implements LoaderCallba
 
     private boolean mMultiPane;
 
+    private TraktCategory mListCategory;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -39,6 +42,9 @@ public class MoviesFragment extends SherlockListFragment implements LoaderCallba
         // set list adapter
         mAdapter = new TraktMoviesAdapter(getSherlockActivity());
         setListAdapter(mAdapter);
+
+        mListCategory = TraktCategory.fromValue(getArguments().getInt(
+                TraktMoviesLoader.InitBundle.CATEGORY));
 
         // style list view
         final ListView list = getListView();
@@ -51,15 +57,7 @@ public class MoviesFragment extends SherlockListFragment implements LoaderCallba
         list.setPadding(layoutPadding, layoutPadding, layoutPadding, defaultPadding);
         list.setFastScrollEnabled(true);
 
-        // nag about no connectivity
-        if (!Utils.isNetworkConnected(getActivity())) {
-            setEmptyText(getString(R.string.offline));
-            setListShown(true);
-        } else {
-            setEmptyText(getString(R.string.movies_empty));
-            setListShown(false);
-            getLoaderManager().initLoader(MOVIES_LOADER_ID, getArguments(), this);
-        }
+        onListLoad(true);
 
         View detailsFragment = getSherlockActivity().findViewById(R.id.fragment);
         mMultiPane = detailsFragment != null && detailsFragment.getVisibility() == View.VISIBLE;
@@ -82,6 +80,29 @@ public class MoviesFragment extends SherlockListFragment implements LoaderCallba
                 Intent i = new Intent(getSherlockActivity(), MovieDetailsActivity.class);
                 i.putExtra(MovieDetailsFragment.InitBundle.IMDBID, movie.imdbId);
                 startActivity(i);
+            }
+        }
+    }
+
+    public void onListLoad(boolean isInitialLoad) {
+        // nag about no connectivity
+        if (!Utils.isNetworkConnected(getActivity())) {
+            setEmptyText(getString(R.string.offline));
+            setListShown(true);
+        } else {
+            // nag about a trakt account if trying to display auth-only lists
+            if (mListCategory != TraktCategory.WATCHLIST
+                    || Utils.isTraktCredentialsValid(getActivity())) {
+                setEmptyText(getString(R.string.movies_empty));
+                setListShown(false);
+                if (isInitialLoad) {
+                    getLoaderManager().initLoader(MOVIES_LOADER_ID, getArguments(), this);
+                } else {
+                    getLoaderManager().restartLoader(MOVIES_LOADER_ID, getArguments(), this);
+                }
+            } else {
+                setEmptyText(getString(R.string.please_setup_trakt));
+                setListShown(true);
             }
         }
     }

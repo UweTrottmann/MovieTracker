@@ -5,10 +5,11 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.uwetrottmann.movies.R;
+import com.uwetrottmann.movies.util.TraktCredentialsDialogFragment;
 import com.uwetrottmann.movies.util.TraktMoviesLoader;
 import com.uwetrottmann.movies.util.TraktMoviesLoader.TraktCategory;
-import com.uwetrottmann.movies.util.Utils;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -44,19 +45,34 @@ public class MoviesActivity extends SherlockFragmentActivity {
         trendingArgs.putInt(TraktMoviesLoader.InitBundle.CATEGORY, TraktCategory.TRENDING.index());
         mTabsAdapter.addTab(trendingTab, MoviesFragment.class, trendingArgs);
 
-        if (Utils.isTraktCredentialsValid(this)) {
-            ActionBar.Tab watchlistTab = actionBar.newTab().setText(R.string.watchlist);
-            Bundle watchlistArgs = new Bundle();
-            watchlistArgs.putInt(TraktMoviesLoader.InitBundle.CATEGORY,
-                    TraktCategory.WATCHLIST.index());
-            mTabsAdapter.addTab(watchlistTab, MoviesFragment.class, watchlistArgs);
-        }
+        ActionBar.Tab watchlistTab = actionBar.newTab().setText(R.string.watchlist);
+        Bundle watchlistArgs = new Bundle();
+        watchlistArgs
+                .putInt(TraktMoviesLoader.InitBundle.CATEGORY, TraktCategory.WATCHLIST.index());
+        mTabsAdapter.addTab(watchlistTab, MoviesFragment.class, watchlistArgs);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getSupportMenuInflater().inflate(R.menu.movies, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_login: {
+                TraktCredentialsDialogFragment f = TraktCredentialsDialogFragment.newInstance();
+                f.show(getSupportFragmentManager(), "credentials-dialog");
+                return true;
+            }
+            case R.id.menu_update: {
+                // MoviesFragment fragment =
+                // mViewPager.getChildAt(mViewPager.getCurrentItem());
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**

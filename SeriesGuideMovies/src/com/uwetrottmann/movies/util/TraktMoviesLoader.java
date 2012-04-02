@@ -53,7 +53,7 @@ public class TraktMoviesLoader extends AsyncTaskLoader<List<Movie>> {
                 }
                 case WATCHLIST: {
                     // there will always be a username as the fragment using
-                    // this is only shown with valid credentials
+                    // this only loads with valid credentials
                     return serviceManager.userService()
                             .watchlistMovies(Utils.getTraktUsername(getContext())).fire();
                 }

@@ -7,6 +7,7 @@
     <string name="watchlist">Watchlist</string>
     <string name="search_hint">Search movies</string>
     <string name="menu_update">Update</string>
+    <string name="menu_login">trakt account</string>
     <string name="powered_by_trakt">powered by trakt.tv</string>
     <string name="offline">No network connectivity. Try again later.</string>
     <string name="trakt">trakt</string>
@@ -14,6 +15,7 @@
 
     <!-- Movie lists -->
     <string name="movies_empty">No movies here.</string>
+    <string name="please_setup_trakt">Setup a trakt account to display this list.</string>
 
     <!-- Movie details -->
     <string name="details_empty">No details here.</string>
