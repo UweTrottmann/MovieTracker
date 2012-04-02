@@ -3,13 +3,17 @@ package com.uwetrottmann.movies.ui;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.jakewharton.trakt.entities.Movie;
+import com.uwetrottmann.movies.Constants;
 import com.uwetrottmann.movies.R;
 import com.uwetrottmann.movies.util.ImageDownloader;
 import com.uwetrottmann.movies.util.TraktMoviesLoader;
 import com.uwetrottmann.movies.util.TraktMoviesLoader.TraktCategory;
 import com.uwetrottmann.movies.util.Utils;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -122,7 +126,7 @@ public class MovieDetailsFragment extends SherlockListFragment implements
                 view = convertView;
             }
 
-            Movie item = getItem(position);
+            final Movie item = getItem(position);
 
             ((TextView) view.findViewById(R.id.title)).setText(item.title);
             ((TextView) view.findViewById(R.id.description)).setText(item.overview);
@@ -137,6 +141,41 @@ public class MovieDetailsFragment extends SherlockListFragment implements
                     dialog.show(mFm, "checkin-dialog");
                 }
             });
+
+            // IMDb button
+            View buttonImdb = view.findViewById(R.id.buttonIMDB);
+            if (item.imdbId != null && item.imdbId.length() != 0) {
+                buttonImdb.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("imdb:///title/"
+                                + item.imdbId + "/"));
+                        try {
+                            getContext().startActivity(myIntent);
+                        } catch (ActivityNotFoundException e) {
+                            myIntent = new Intent(Intent.ACTION_VIEW, Uri
+                                    .parse(Constants.IMDB_TITLE_URL + item.imdbId));
+                            getContext().startActivity(myIntent);
+                        }
+                    }
+                });
+            } else {
+                buttonImdb.setVisibility(View.GONE);
+            }
+
+            // Trailer button
+            View buttonTrailer = view.findViewById(R.id.buttonTrailer);
+            if (item.trailer != null && item.trailer.length() != 0) {
+                buttonTrailer.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.trailer));
+                        getContext().startActivity(myIntent);
+                    }
+                });
+            } else {
+                buttonTrailer.setVisibility(View.GONE);
+            }
 
             ImageView imageView = (ImageView) view.findViewById(R.id.fanart);
             if (item.images.fanart != null) {

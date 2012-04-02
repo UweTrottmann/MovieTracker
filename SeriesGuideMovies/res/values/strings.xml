@@ -12,6 +12,7 @@
     <string name="offline">No network connectivity. Try again later.</string>
     <string name="trakt">trakt</string>
     <string name="getglue">GetGlue</string>
+    <string name="imdb">IMDb</string>
     <string name="seen">Seen</string>
     <string name="collect">Collected</string>
 
@@ -21,12 +22,16 @@
 
     <!-- Movie details -->
     <string name="details_empty">No details here.</string>
-    <string name="paste_title">Paste title</string>
+    <string name="actors">Actors</string>
+    <string name="crew">Crew</string>
     <string name="addtocalendar">Add to calendar</string>
+    <string name="shouts">Shouts</string>
+    <string name="trailer">Trailer</string>
 
     <!-- Check Ins -->
     <string name="checkin">Check In</string>
     <string name="checkin_hint">Type a message (optional)</string>
+    <string name="paste_title">Paste title</string>
 
     <!-- Ratings -->
     <plurals name="votes">

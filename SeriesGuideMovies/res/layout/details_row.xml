@@ -38,42 +38,9 @@
         android:layout_height="wrap_content" >
 
         <LinearLayout
-            android:id="@+id/traktrating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/default_padding" >
-
-            <TextView
-                android:id="@+id/lovevalue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/inline_padding"
-                android:paddingBottom="2dp"
-                android:text="@string/notraktrating"
-                android:textSize="@dimen/text_size_xlarge" />
-
-            <ImageView
-                android:id="@+id/traktlove"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/trakt_love_large" />
-
-            <TextView
-                android:id="@+id/lovevotes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/inline_padding"
-                android:textSize="@dimen/text_size_xmedium" />
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/buttonbar"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-            android:layout_below="@+id/traktrating"
             android:layout_marginBottom="@dimen/default_padding" >
 
             <Button
@@ -115,13 +82,134 @@
                 android:src="@drawable/ic_action_calendar" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/traktrating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/buttonbar"
+            android:padding="@dimen/default_padding" >
+
+            <TextView
+                android:id="@+id/lovevalue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/inline_padding"
+                android:paddingBottom="2dp"
+                android:text="@string/notraktrating"
+                android:textSize="@dimen/text_size_xlarge" />
+
+            <ImageView
+                android:id="@+id/traktlove"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/trakt_love_large" />
+
+            <TextView
+                android:id="@+id/lovevotes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/inline_padding"
+                android:textSize="@dimen/text_size_xmedium" />
+        </LinearLayout>
+
         <TextView
             android:id="@+id/description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/buttonbar"
+            android:layout_below="@+id/traktrating"
+            android:padding="@dimen/default_padding"
             android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textSize="@dimen/text_size_medium" />
+
+        <TextView
+            android:id="@+id/labelActors"
+            style="@style/Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/description"
+            android:text="@string/actors" />
+
+        <TextView
+            android:id="@+id/actors"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelActors" />
+
+        <TextView
+            android:id="@+id/labelCrew"
+            style="@style/Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/actors"
+            android:text="@string/crew" />
+
+        <TextView
+            android:id="@+id/crew"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelCrew" />
+
+        <include
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/crew"
+            android:layout_marginTop="@dimen/inline_padding"
+            layout="@layout/holodivider" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_below="@+id/divider"
+            android:baselineAligned="false"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/buttonIMDB"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/list_selector_holo_dark"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:padding="@dimen/default_padding"
+                android:text="@string/imdb"
+                android:textSize="@dimen/text_size_medium" >
+            </TextView>
+
+            <TextView
+                android:id="@+id/buttonTrailer"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/list_selector_holo_dark"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:padding="@dimen/default_padding"
+                android:text="@string/trailer"
+                android:textSize="@dimen/text_size_medium" >
+            </TextView>
+
+            <TextView
+                android:id="@+id/buttonShouts"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/list_selector_holo_dark"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:padding="@dimen/default_padding"
+                android:text="@string/shouts"
+                android:textSize="@dimen/text_size_medium" >
+            </TextView>
+        </LinearLayout>
     </RelativeLayout>
 
 </LinearLayout>
