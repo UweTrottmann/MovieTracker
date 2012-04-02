@@ -4,9 +4,7 @@
     <string name="app_name">SeriesGuide movies</string>
     <string name="description_poster">Movie poster</string>
     <string name="trending">Trending</string>
-    <string name="released">Released</string>
-    <string name="recommended">Recommended</string>
-    <string name="library">Library</string>
+    <string name="watchlist">Watchlist</string>
     <string name="search_hint">Search movies</string>
     <string name="menu_update">Update</string>
     <string name="powered_by_trakt">powered by trakt.tv</string>
@@ -29,6 +27,17 @@
         <item quantity="one">%d vote</item>
         <item quantity="other">%d votes</item>
     </plurals>
+
+    <!-- Settings -->
+    <string name="pref_traktcredentials">trakt.tv credentials</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="createaccount">Create new account</string>
+    <string name="connect">Connect</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="waitplease">A moment, please…</string>
+    <string name="trakt_generalerror">Something went wrong. Please check your credentials and try again.</string>
 
     <!-- DO NOT TRANSLATE -->
     <string name="notraktrating">--%</string>

@@ -14,6 +14,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,10 +23,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.channels.FileChannel;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class Utils {
 
     private static final int DEFAULT_BUFFER_SIZE = 8192;
+
+    private static final String TAG = "Utils";
 
     private static ServiceManager sServiceManagerWithAuthInstance;
 
@@ -160,6 +165,23 @@ public class Utils {
             version = "UnknownVersion";
         }
         return version;
+    }
+
+    public static String toSHA1(byte[] convertme) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            byte[] b = md.digest(convertme);
+
+            String result = "";
+            for (int i = 0; i < b.length; i++) {
+                result += Integer.toString((b[i] & 0xff) + 0x100, 16).substring(1);
+            }
+
+            return result;
+        } catch (NoSuchAlgorithmException e) {
+            Log.w(TAG, "Could not get SHA-1 message digest instance", e);
+        }
+        return null;
     }
 
 }
