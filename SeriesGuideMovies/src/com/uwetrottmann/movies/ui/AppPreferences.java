@@ -9,4 +9,6 @@ public class AppPreferences {
 
     public static final String KEY_RANDOM = "com.uwetrottmann.movies.random";
 
+    public static final String KEY_ENABLEANALYTICS = "com.uwetrottmann.movies.analytics";
+
 }
