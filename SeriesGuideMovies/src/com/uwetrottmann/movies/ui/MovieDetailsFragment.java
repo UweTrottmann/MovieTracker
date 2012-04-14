@@ -137,7 +137,8 @@ public class MovieDetailsFragment extends SherlockListFragment implements
             view.findViewById(R.id.checkinButton).setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    CheckInDialogFragment dialog = CheckInDialogFragment.newInstance();
+                    CheckInDialogFragment dialog = CheckInDialogFragment.newInstance(item.imdbId,
+                            item.title);
                     dialog.show(mFm, "checkin-dialog");
                 }
             });
