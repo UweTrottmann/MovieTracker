@@ -267,19 +267,6 @@ public class TraktTask extends AsyncTask<Void, Void, Response> {
                     mListener.onTraktActionComplete(false);
                 }
             }
-        } else {
-            // fail, gather valid credentials first
-            // TODO: allow credentials dialog to resume check in
-            TraktCredentialsDialogFragment newFragment = TraktCredentialsDialogFragment
-                    .newInstance();
-            FragmentTransaction ft = mFm.beginTransaction();
-            newFragment.show(ft, "traktdialog");
-
-            // notify that our first run completed, however due to invalid
-            // credentials we have not done anything
-            if (mListener != null) {
-                mListener.onTraktActionComplete(true);
-            }
         }
     }
 }
