@@ -15,6 +15,7 @@
     <string name="imdb">IMDb</string>
     <string name="seen">Seen</string>
     <string name="collect">Collected</string>
+    <string name="sending">Sending…</string>
 
     <!-- Movie lists -->
     <string name="movies_empty">No movies here.</string>
@@ -38,6 +39,9 @@
         <item quantity="one">%d vote</item>
         <item quantity="other">%d votes</item>
     </plurals>
+
+    <!-- Sharing -->
+    <string name="trakt_success">Success with trakt</string>
 
     <!-- Settings -->
     <string name="pref_traktcredentials">trakt.tv credentials</string>

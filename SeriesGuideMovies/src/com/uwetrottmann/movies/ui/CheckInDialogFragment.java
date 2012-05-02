@@ -5,6 +5,7 @@ import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.uwetrottmann.movies.R;
 import com.uwetrottmann.movies.util.AnalyticsUtils;
 import com.uwetrottmann.movies.util.TraktCredentialsDialogFragment;
+import com.uwetrottmann.movies.util.TraktTask;
 import com.uwetrottmann.movies.util.Utils;
 
 import android.content.SharedPreferences;
@@ -151,7 +152,6 @@ public class CheckInDialogFragment extends SherlockDialogFragment {
                         updateCheckInButtonState();
                         return;
                     } else {
-                        // TODO
                         // check in
 
                         // We want to remove any currently showing
@@ -162,13 +162,12 @@ public class CheckInDialogFragment extends SherlockDialogFragment {
                         if (prev != null) {
                             ft.remove(prev);
                         }
-                        // ProgressDialog newFragment =
-                        // ProgressDialog.newInstance();
-                        // newFragment.show(ft, "progress-dialog");
-                        //
-                        // // start the trakt check in task
-                        // new TraktTask(getActivity(), getFragmentManager(),
-                        // null).checkin(imdbId, message).execute();
+                        ProgressDialog newFragment = ProgressDialog.newInstance();
+                        newFragment.show(ft, "progress-dialog");
+
+                        // start the trakt check in task
+                        new TraktTask(getActivity(), getFragmentManager(), null).checkin(imdbId,
+                                message).execute();
                     }
                 }
 

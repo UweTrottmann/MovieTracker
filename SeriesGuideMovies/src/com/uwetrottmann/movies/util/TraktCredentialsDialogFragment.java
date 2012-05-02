@@ -7,6 +7,7 @@ import com.jakewharton.trakt.ServiceManager;
 import com.jakewharton.trakt.TraktException;
 import com.jakewharton.trakt.entities.Response;
 import com.uwetrottmann.movies.R;
+import com.uwetrottmann.movies.entities.TraktStatus;
 import com.uwetrottmann.movies.ui.AppPreferences;
 
 import android.content.Context;
@@ -31,12 +32,6 @@ import android.widget.TextView;
  * @author Uwe Trottmann
  */
 public class TraktCredentialsDialogFragment extends SherlockDialogFragment {
-
-    public interface TraktStatus {
-        String SUCCESS = "success";
-
-        String FAILURE = "failure";
-    }
 
     public static TraktCredentialsDialogFragment newInstance() {
         TraktCredentialsDialogFragment f = new TraktCredentialsDialogFragment();
