@@ -192,7 +192,7 @@ public class LocalMoviesFragment extends SherlockListFragment implements LoaderC
             String poster = mCursor.getString(MoviesQuery.POSTER);
             if (poster != null) {
                 String posterPath = poster.substring(0, poster.length() - 4) + "-138.jpg";
-                mImageDownloader.download(posterPath, viewHolder.poster, false);
+                mImageDownloader.download(posterPath, viewHolder.poster, true);
             }
 
             return convertView;
