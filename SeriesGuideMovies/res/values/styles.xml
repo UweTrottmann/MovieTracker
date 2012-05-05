@@ -20,10 +20,10 @@
     </style>
 
     <style name="seriesguidemoviestheme_ActionBar" parent="@style/Widget.Sherlock.ActionBar">
-        <item name="background">@drawable/ab_solid_seriesguidemoviestheme</item>
+        <item name="background">@drawable/sgm_actionbar_background</item>
         <item name="backgroundStacked">@drawable/ab_stacked_solid_seriesguidemoviestheme</item>
         <item name="backgroundSplit">@drawable/ab_bottom_solid_seriesguidemoviestheme</item>
-        <item name="android:background">@drawable/ab_solid_seriesguidemoviestheme</item>
+        <item name="android:background">@drawable/sgm_actionbar_background</item>
         <item name="android:backgroundStacked">@drawable/ab_stacked_solid_seriesguidemoviestheme</item>
         <item name="android:backgroundSplit">@drawable/ab_bottom_solid_seriesguidemoviestheme</item>
     </style>
