@@ -9,6 +9,7 @@ import com.jakewharton.trakt.enumerations.Rating;
 import com.jakewharton.trakt.services.MovieService.CheckinBuilder;
 import com.uwetrottmann.movies.R;
 import com.uwetrottmann.movies.entities.TraktStatus;
+import com.uwetrottmann.movies.ui.CancelCheckInDialogFragment;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -248,13 +249,11 @@ public class TraktTask extends AsyncTask<Void, Void, Response> {
             } else if (r.status.equalsIgnoreCase(TraktStatus.FAILURE)) {
                 if (r.wait != 0) {
 
-                    // TODO provide cancel dialog
                     // looks like a check in is in progress
-                    // TraktCancelCheckinDialogFragment newFragment =
-                    // TraktCancelCheckinDialogFragment
-                    // .newInstance(mArgs, r.wait);
-                    // FragmentTransaction ft = mFm.beginTransaction();
-                    // newFragment.show(ft, "cancel-checkin-dialog");
+                    CancelCheckInDialogFragment newFragment = CancelCheckInDialogFragment
+                            .newInstance(mArgs, r.wait);
+                    FragmentTransaction ft = mFm.beginTransaction();
+                    newFragment.show(ft, "cancel-checkin-dialog");
 
                 } else {
 
