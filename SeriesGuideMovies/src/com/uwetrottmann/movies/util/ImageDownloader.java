@@ -56,7 +56,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * improve performance.
  */
 public class ImageDownloader {
-    private static final String LOG_TAG = "ImageDownloader";
+    private static final String TAG = "ImageDownloader";
 
     private static ImageDownloader _instance;
 
@@ -67,6 +67,7 @@ public class ImageDownloader {
         // min API level 8
         mDiskCacheDir = Environment.getExternalStorageDirectory().getAbsolutePath()
                 + "/Android/data/" + context.getPackageName() + "/files";
+        createDirectories();
     }
 
     public static synchronized ImageDownloader getInstance(Context context) {
@@ -74,6 +75,15 @@ public class ImageDownloader {
             _instance = new ImageDownloader(context);
         }
         return _instance;
+    }
+
+    private void createDirectories() {
+        new File(mDiskCacheDir).mkdirs();
+        try {
+            new File(mDiskCacheDir + "/.nomedia").createNewFile();
+        } catch (IOException e) {
+            Log.w(TAG, "Could not create .nomedia file");
+        }
     }
 
     /**
@@ -246,13 +256,13 @@ public class ImageDownloader {
             }
         } catch (IOException e) {
             getRequest.abort();
-            Log.w(LOG_TAG, "I/O error while retrieving bitmap from " + url, e);
+            Log.w(TAG, "I/O error while retrieving bitmap from " + url, e);
         } catch (IllegalStateException e) {
             getRequest.abort();
-            Log.w(LOG_TAG, "Incorrect URL: " + url);
+            Log.w(TAG, "Incorrect URL: " + url);
         } catch (Exception e) {
             getRequest.abort();
-            Log.w(LOG_TAG, "Error while retrieving bitmap from " + url, e);
+            Log.w(TAG, "Error while retrieving bitmap from " + url, e);
         }
         return null;
     }
