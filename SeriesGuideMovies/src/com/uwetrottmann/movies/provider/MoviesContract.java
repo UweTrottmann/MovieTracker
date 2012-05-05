@@ -22,9 +22,9 @@ import android.provider.BaseColumns;
 
 public class MoviesContract {
 
-    static final String PATH_MOVIES = "movies";
+    public static final String CONTENT_AUTHORITY = "com.uwetrottmann.movies.provider";
 
-    static final String CONTENT_AUTHORITY = "com.uwetrottmann.movies.provider";
+    static final String PATH_MOVIES = "movies";
 
     private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
