@@ -46,7 +46,7 @@ public class MoviesProvider extends ContentProvider {
 
     private static final int MOVIE_ID = 101;
 
-    private static final boolean LOGV = false;
+    private static final boolean LOGV = true;
 
     /**
      * Build and return a {@link UriMatcher} that catches all {@link Uri}
@@ -102,9 +102,9 @@ public class MoviesProvider extends ContentProvider {
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case MOVIES: {
-                db.insertOrThrow(Tables.MOVIES, null, values);
+                long newid = db.insertOrThrow(Tables.MOVIES, null, values);
                 getContext().getContentResolver().notifyChange(uri, null);
-                return Movies.buildMovieUri(values.getAsInteger(Movies._ID));
+                return Movies.buildMovieUri(newid);
             }
             default: {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);

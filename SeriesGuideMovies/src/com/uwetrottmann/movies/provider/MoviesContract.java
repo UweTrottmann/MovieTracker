@@ -78,7 +78,7 @@ public class MoviesContract {
         /** Use if a single item is returned */
         public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.sgmovies.movie";
 
-        public static Uri buildMovieUri(int movieId) {
+        public static Uri buildMovieUri(long movieId) {
             return CONTENT_URI.buildUpon().appendPath(String.valueOf(movieId)).build();
         }
 
