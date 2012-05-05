@@ -6,13 +6,11 @@
         <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
         <item name="vpiTabTextStyle">@style/Widget.TabPageIndicator.Text</item>
         <item name="actionBarItemBackground">@drawable/selectable_background_seriesguidemoviestheme</item>
-        <item name="popupMenuStyle">@style/seriesguidemoviestheme_PopupMenu</item>
         <item name="dropDownListViewStyle">@style/seriesguidemoviestheme_DropDownListView</item>
         <item name="actionBarTabStyle">@style/seriesguidemoviestheme_ActionBarTabStyle</item>
         <item name="actionDropDownStyle">@style/seriesguidemoviestheme_DropDownNav</item>
         <item name="actionBarStyle">@style/seriesguidemoviestheme_ActionBar</item>
         <item name="android:selectableItemBackground">@drawable/selectable_background_seriesguidemoviestheme</item>
-        <item name="android:popupMenuStyle">@style/seriesguidemoviestheme_PopupMenu</item>
         <item name="android:dropDownListViewStyle">@style/seriesguidemoviestheme_DropDownListView</item>
         <item name="android:actionBarTabStyle">@style/seriesguidemoviestheme_ActionBarTabStyle</item>
         <item name="android:actionDropDownStyle">@style/seriesguidemoviestheme_DropDownNav</item>
@@ -24,12 +22,7 @@
         <item name="backgroundStacked">@drawable/ab_stacked_solid_seriesguidemoviestheme</item>
         <item name="backgroundSplit">@drawable/ab_bottom_solid_seriesguidemoviestheme</item>
         <item name="android:background">@drawable/sgm_actionbar_background</item>
-        <item name="android:backgroundStacked">@drawable/ab_stacked_solid_seriesguidemoviestheme</item>
         <item name="android:backgroundSplit">@drawable/ab_bottom_solid_seriesguidemoviestheme</item>
-    </style>
-
-    <style name="seriesguidemoviestheme_PopupMenu" parent="@android:style/Widget.Holo.ListPopupWindow">
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_seriesguidemoviestheme</item>
     </style>
 
     <style name="seriesguidemoviestheme_DropDownListView" parent="@style/Widget.Sherlock.ListView.DropDown">
@@ -44,7 +37,6 @@
     <style name="seriesguidemoviestheme_DropDownNav" parent="@style/Widget.Sherlock.Spinner.DropDown.ActionBar">
         <item name="background">@drawable/spinner_background_ab_seriesguidemoviestheme</item>
         <item name="android:background">@drawable/spinner_background_ab_seriesguidemoviestheme</item>
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_seriesguidemoviestheme</item>
         <item name="android:dropDownSelector">@drawable/selectable_background_seriesguidemoviestheme</item>
     </style>
 

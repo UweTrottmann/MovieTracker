@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- File created by the Android Action Bar Style Generator
+<!--
+     File created by the Android Action Bar Style Generator
 
      Copyright (C) 2012 readyState Software Ltd
 
@@ -17,6 +18,8 @@
 -->
 
 <resources>
-	<color name="focused_seriesguidemoviestheme">#88ff0040</color>
-	<color name="pressed_seriesguidemoviestheme">#CCff0040</color>
+
+    <color name="focused_seriesguidemoviestheme">#88ff0040</color>
+    <color name="pressed_seriesguidemoviestheme">#CCc70035</color>
+
 </resources>
