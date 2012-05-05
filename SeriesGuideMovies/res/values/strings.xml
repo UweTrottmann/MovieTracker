@@ -16,6 +16,7 @@
     <string name="seen">Seen</string>
     <string name="collect">Collected</string>
     <string name="sending">Sending…</string>
+    <string name="update_inprogress">Already updating, try again later.</string>
 
     <!-- Movie lists -->
     <string name="movies_empty">No movies here.</string>

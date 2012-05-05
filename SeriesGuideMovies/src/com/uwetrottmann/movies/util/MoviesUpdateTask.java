@@ -137,7 +137,16 @@ public class MoviesUpdateTask extends AsyncTask<Void, Void, Integer> {
         }
 
         return SUCCESS;
+    }
 
+    @Override
+    protected void onCancelled() {
+        onFinishUp();
+    }
+
+    @Override
+    protected void onPostExecute(Integer result) {
+        onFinishUp();
     }
 
     private void onBuildMovieValues(Movie movie, ContentValues values) {
@@ -165,6 +174,11 @@ public class MoviesUpdateTask extends AsyncTask<Void, Void, Integer> {
 
     private Context getContext() {
         return mContext;
+    }
+
+    private void onFinishUp() {
+        mContext = null;
+        TaskManager.getInstance(getContext()).onTaskCompleted();
     }
 
 }

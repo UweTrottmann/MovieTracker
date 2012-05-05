@@ -23,6 +23,8 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.uwetrottmann.movies.R;
+import com.uwetrottmann.movies.util.MoviesUpdateTask;
+import com.uwetrottmann.movies.util.TaskManager;
 import com.uwetrottmann.movies.util.TraktCredentialsDialogFragment;
 import com.uwetrottmann.movies.util.TraktMoviesLoader;
 import com.uwetrottmann.movies.util.TraktMoviesLoader.TraktCategory;
@@ -83,8 +85,8 @@ public class MoviesActivity extends SherlockFragmentActivity {
                 return true;
             }
             case R.id.menu_update: {
-                // MoviesFragment fragment =
-                // mViewPager.getChildAt(mViewPager.getCurrentItem());
+                TaskManager.getInstance(this).tryUpdateTask(
+                        new MoviesUpdateTask(getApplicationContext()));
                 return true;
             }
         }
