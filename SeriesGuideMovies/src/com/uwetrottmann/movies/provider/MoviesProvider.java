@@ -46,7 +46,7 @@ public class MoviesProvider extends ContentProvider {
 
     private static final int MOVIE_ID = 101;
 
-    private static final boolean LOGV = true;
+    private static final boolean LOGV = false;
 
     /**
      * Build and return a {@link UriMatcher} that catches all {@link Uri}
