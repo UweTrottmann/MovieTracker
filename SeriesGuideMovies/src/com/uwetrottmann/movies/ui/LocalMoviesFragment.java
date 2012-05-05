@@ -18,8 +18,8 @@
 package com.uwetrottmann.movies.ui;
 
 import com.actionbarsherlock.app.SherlockListFragment;
-import com.jakewharton.trakt.entities.Movie;
 import com.uwetrottmann.movies.R;
+import com.uwetrottmann.movies.provider.MoviesContract.Movies;
 import com.uwetrottmann.movies.util.ImageDownloader;
 import com.uwetrottmann.movies.util.TraktMoviesLoader;
 import com.uwetrottmann.movies.util.TraktMoviesLoader.TraktCategory;
@@ -27,25 +27,25 @@ import com.uwetrottmann.movies.util.Utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.List;
-
-public class MoviesFragment extends SherlockListFragment implements LoaderCallbacks<List<Movie>> {
+public class LocalMoviesFragment extends SherlockListFragment implements LoaderCallbacks<Cursor> {
 
     private static final int MOVIES_LOADER_ID = 0;
 
-    private TraktMoviesAdapter mAdapter;
+    private MoviesCursorAdapter mAdapter;
 
     private boolean mMultiPane;
 
@@ -56,7 +56,7 @@ public class MoviesFragment extends SherlockListFragment implements LoaderCallba
         super.onActivityCreated(savedInstanceState);
 
         // set list adapter
-        mAdapter = new TraktMoviesAdapter(getActivity());
+        mAdapter = new MoviesCursorAdapter(getActivity());
         setListAdapter(mAdapter);
 
         mListCategory = TraktCategory.fromValue(getArguments().getInt(
@@ -81,10 +81,11 @@ public class MoviesFragment extends SherlockListFragment implements LoaderCallba
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        Movie movie = (Movie) l.getItemAtPosition(position);
-        if (movie != null && movie.imdbId != null) {
+        Cursor movie = (Cursor) l.getItemAtPosition(position);
+        if (movie != null && movie.getString(MoviesQuery.IMDBID) != null) {
+            final String imdbId = movie.getString(MoviesQuery.IMDBID);
             if (mMultiPane) {
-                MovieDetailsFragment newFragment = MovieDetailsFragment.newInstance(movie.imdbId);
+                MovieDetailsFragment newFragment = MovieDetailsFragment.newInstance(imdbId);
 
                 // Execute a transaction, replacing any existing
                 // fragment with this one inside the frame.
@@ -94,43 +95,37 @@ public class MoviesFragment extends SherlockListFragment implements LoaderCallba
                 ft.commit();
             } else {
                 Intent i = new Intent(getSherlockActivity(), MovieDetailsActivity.class);
-                i.putExtra(MovieDetailsFragment.InitBundle.IMDBID, movie.imdbId);
+                i.putExtra(MovieDetailsFragment.InitBundle.IMDBID, imdbId);
                 startActivity(i);
             }
         }
     }
 
     public void onListLoad(boolean isInitialLoad) {
-        // nag about no connectivity
-        if (!Utils.isNetworkConnected(getActivity())) {
-            setEmptyText(getString(R.string.offline));
-            setListShown(true);
-        } else {
-            // nag about a trakt account if trying to display auth-only lists
-            if (mListCategory != TraktCategory.WATCHLIST
-                    || Utils.isTraktCredentialsValid(getActivity())) {
-                setEmptyText(getString(R.string.movies_empty));
-                setListShown(false);
-                if (isInitialLoad) {
-                    getLoaderManager().initLoader(MOVIES_LOADER_ID, getArguments(), this);
-                } else {
-                    getLoaderManager().restartLoader(MOVIES_LOADER_ID, getArguments(), this);
-                }
+        // nag about a trakt account if trying to display auth-only lists
+        if (Utils.isTraktCredentialsValid(getActivity())) {
+            setEmptyText(getString(R.string.movies_empty));
+            setListShown(false);
+            if (isInitialLoad) {
+                getLoaderManager().initLoader(MOVIES_LOADER_ID, getArguments(), this);
             } else {
-                setEmptyText(getString(R.string.please_setup_trakt));
-                setListShown(true);
+                getLoaderManager().restartLoader(MOVIES_LOADER_ID, getArguments(), this);
             }
+        } else {
+            setEmptyText(getString(R.string.please_setup_trakt));
+            setListShown(true);
         }
     }
 
     @Override
-    public Loader<List<Movie>> onCreateLoader(int id, Bundle args) {
-        return new TraktMoviesLoader(getSherlockActivity(), args);
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(getActivity(), Movies.CONTENT_URI, MoviesQuery.PROJECTION, null,
+                null, MoviesQuery.SORTORDER);
     }
 
     @Override
-    public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> data) {
-        mAdapter.setData(data);
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mAdapter.swapCursor(data);
 
         if (isResumed()) {
             setListShown(true);
@@ -140,11 +135,11 @@ public class MoviesFragment extends SherlockListFragment implements LoaderCallba
     }
 
     @Override
-    public void onLoaderReset(Loader<List<Movie>> loader) {
-        mAdapter.setData(null);
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mAdapter.swapCursor(null);
     }
 
-    private static class TraktMoviesAdapter extends ArrayAdapter<Movie> {
+    private static class MoviesCursorAdapter extends SimpleCursorAdapter {
 
         private LayoutInflater mLayoutInflater;
 
@@ -152,8 +147,16 @@ public class MoviesFragment extends SherlockListFragment implements LoaderCallba
 
         private ImageDownloader mImageDownloader;
 
-        public TraktMoviesAdapter(Context context) {
-            super(context, LAYOUT);
+        private final static String[] FROM = new String[] {
+                Movies.TITLE, Movies.OVERVIEW, Movies.POSTER
+        };
+
+        private final static int[] TO = new int[] {
+                R.id.title, R.id.description, R.id.poster
+        };
+
+        public MoviesCursorAdapter(Context context) {
+            super(context, LAYOUT, null, FROM, TO, 0);
             mLayoutInflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             mImageDownloader = ImageDownloader.getInstance(context);
@@ -161,6 +164,14 @@ public class MoviesFragment extends SherlockListFragment implements LoaderCallba
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            if (!mDataValid) {
+                throw new IllegalStateException(
+                        "this should only be called when the cursor is valid");
+            }
+            if (!mCursor.moveToPosition(position)) {
+                throw new IllegalStateException("couldn't move cursor to position " + position);
+            }
+
             ViewHolder viewHolder;
 
             if (convertView == null) {
@@ -176,25 +187,15 @@ public class MoviesFragment extends SherlockListFragment implements LoaderCallba
             }
 
             // set text properties immediately
-            Movie item = getItem(position);
-            viewHolder.title.setText(item.title);
-            viewHolder.overview.setText(item.overview);
-            if (item.images.poster != null) {
-                String posterPath = item.images.poster
-                        .substring(0, item.images.poster.length() - 4) + "-138.jpg";
+            viewHolder.title.setText(mCursor.getString(MoviesQuery.TITLE));
+            viewHolder.overview.setText(mCursor.getString(MoviesQuery.OVERVIEW));
+            String poster = mCursor.getString(MoviesQuery.POSTER);
+            if (poster != null) {
+                String posterPath = poster.substring(0, poster.length() - 4) + "-138.jpg";
                 mImageDownloader.download(posterPath, viewHolder.poster, false);
             }
 
             return convertView;
-        }
-
-        public void setData(List<Movie> data) {
-            clear();
-            if (data != null) {
-                for (Movie userProfile : data) {
-                    add(userProfile);
-                }
-            }
         }
 
         static class ViewHolder {
@@ -205,6 +206,26 @@ public class MoviesFragment extends SherlockListFragment implements LoaderCallba
 
             public ImageView poster;
         }
+    }
+
+    interface MoviesQuery {
+
+        String[] PROJECTION = new String[] {
+                Movies._ID, Movies.TITLE, Movies.OVERVIEW, Movies.POSTER, Movies.IMDBID
+        };
+
+        String SORTORDER = Movies.TITLE + " ASC";
+
+        int _ID = 0;
+
+        int TITLE = 1;
+
+        int OVERVIEW = 2;
+
+        int POSTER = 3;
+        
+        int IMDBID = 4;
+
     }
 
 }

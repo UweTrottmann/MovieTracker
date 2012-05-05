@@ -67,7 +67,7 @@ public class MoviesActivity extends SherlockFragmentActivity {
         Bundle watchlistArgs = new Bundle();
         watchlistArgs
                 .putInt(TraktMoviesLoader.InitBundle.CATEGORY, TraktCategory.WATCHLIST.index());
-        mTabsAdapter.addTab(watchlistTab, MoviesFragment.class, watchlistArgs);
+        mTabsAdapter.addTab(watchlistTab, LocalMoviesFragment.class, watchlistArgs);
     }
 
     @Override
