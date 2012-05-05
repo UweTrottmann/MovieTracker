@@ -5,6 +5,47 @@
         <item name="vpiCirclePageIndicatorStyle">@style/Widget.CirclePageIndicator</item>
         <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
         <item name="vpiTabTextStyle">@style/Widget.TabPageIndicator.Text</item>
+        <item name="actionBarItemBackground">@drawable/selectable_background_seriesguidemoviestheme</item>
+        <item name="popupMenuStyle">@style/seriesguidemoviestheme_PopupMenu</item>
+        <item name="dropDownListViewStyle">@style/seriesguidemoviestheme_DropDownListView</item>
+        <item name="actionBarTabStyle">@style/seriesguidemoviestheme_ActionBarTabStyle</item>
+        <item name="actionDropDownStyle">@style/seriesguidemoviestheme_DropDownNav</item>
+        <item name="actionBarStyle">@style/seriesguidemoviestheme_ActionBar</item>
+        <item name="android:selectableItemBackground">@drawable/selectable_background_seriesguidemoviestheme</item>
+        <item name="android:popupMenuStyle">@style/seriesguidemoviestheme_PopupMenu</item>
+        <item name="android:dropDownListViewStyle">@style/seriesguidemoviestheme_DropDownListView</item>
+        <item name="android:actionBarTabStyle">@style/seriesguidemoviestheme_ActionBarTabStyle</item>
+        <item name="android:actionDropDownStyle">@style/seriesguidemoviestheme_DropDownNav</item>
+        <item name="android:actionBarStyle">@style/seriesguidemoviestheme_ActionBar</item>
+    </style>
+
+    <style name="seriesguidemoviestheme_ActionBar" parent="@style/Widget.Sherlock.ActionBar">
+        <item name="background">@drawable/ab_solid_seriesguidemoviestheme</item>
+        <item name="backgroundStacked">@drawable/ab_stacked_solid_seriesguidemoviestheme</item>
+        <item name="backgroundSplit">@drawable/ab_bottom_solid_seriesguidemoviestheme</item>
+        <item name="android:background">@drawable/ab_solid_seriesguidemoviestheme</item>
+        <item name="android:backgroundStacked">@drawable/ab_stacked_solid_seriesguidemoviestheme</item>
+        <item name="android:backgroundSplit">@drawable/ab_bottom_solid_seriesguidemoviestheme</item>
+    </style>
+
+    <style name="seriesguidemoviestheme_PopupMenu" parent="@android:style/Widget.Holo.ListPopupWindow">
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_seriesguidemoviestheme</item>
+    </style>
+
+    <style name="seriesguidemoviestheme_DropDownListView" parent="@style/Widget.Sherlock.ListView.DropDown">
+        <item name="android:listSelector">@drawable/selectable_background_seriesguidemoviestheme</item>
+    </style>
+
+    <style name="seriesguidemoviestheme_ActionBarTabStyle" parent="@style/Widget.Sherlock.ActionBar.TabView">
+        <item name="background">@drawable/tab_indicator_ab_seriesguidemoviestheme</item>
+        <item name="android:background">@drawable/tab_indicator_ab_seriesguidemoviestheme</item>
+    </style>
+
+    <style name="seriesguidemoviestheme_DropDownNav" parent="@style/Widget.Sherlock.Spinner.DropDown.ActionBar">
+        <item name="background">@drawable/spinner_background_ab_seriesguidemoviestheme</item>
+        <item name="android:background">@drawable/spinner_background_ab_seriesguidemoviestheme</item>
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_seriesguidemoviestheme</item>
+        <item name="android:dropDownSelector">@drawable/selectable_background_seriesguidemoviestheme</item>
     </style>
 
     <style name="ScrollingLayout">
