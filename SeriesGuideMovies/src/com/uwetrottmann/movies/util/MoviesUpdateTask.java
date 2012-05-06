@@ -34,8 +34,9 @@ import android.os.RemoteException;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 public class MoviesUpdateTask extends AsyncTask<Void, Void, Integer> {
 
@@ -84,11 +85,11 @@ public class MoviesUpdateTask extends AsyncTask<Void, Void, Integer> {
         // build a list of movies already in the database
         final Cursor oldWatchlist = getContext().getContentResolver().query(Movies.CONTENT_URI,
                 new String[] {
-                    Movies.IMDBID
+                        Movies.IMDBID, Movies.LASTUPDATED
                 }, null, null, null);
-        HashSet<String> oldWatchlistIds = new HashSet<String>();
+        HashMap<String, Long> oldWatchlistIds = Maps.newHashMap();
         while (oldWatchlist.moveToNext()) {
-            oldWatchlistIds.add(oldWatchlist.getString(0));
+            oldWatchlistIds.put(oldWatchlist.getString(0), oldWatchlist.getLong(1));
         }
         oldWatchlist.close();
 
@@ -98,27 +99,32 @@ public class MoviesUpdateTask extends AsyncTask<Void, Void, Integer> {
             ContentValues values = new ContentValues();
             onBuildMovieValues(movie, values);
 
-            ContentProviderOperation op;
-            if (oldWatchlistIds.remove(movie.imdbId)) {
-                // update
-                op = ContentProviderOperation.newUpdate(Movies.CONTENT_URI)
-                        .withSelection(Movies.IMDBID + "=?", new String[] {
-                            movie.imdbId
-                        }).withValues(values).build();
+            ContentProviderOperation op = null;
+            Long movieLastUpdated = oldWatchlistIds.remove(movie.imdbId);
+            if (movieLastUpdated != null) {
+                // update (only if there are changes
+                if (movieLastUpdated < movie.lastUpdated.getTime()) {
+                    op = ContentProviderOperation.newUpdate(Movies.CONTENT_URI)
+                            .withSelection(Movies.IMDBID + "=?", new String[] {
+                                movie.imdbId
+                            }).withValues(values).build();
+                }
             } else {
                 // insert
                 op = ContentProviderOperation.newInsert(Movies.CONTENT_URI).withValues(values)
                         .build();
             }
 
-            batch.add(op);
+            if (op != null) {
+                batch.add(op);
+            }
         }
 
         // build db ops to remove movies that got deleted from the watchlist
-        for (String imdbId : oldWatchlistIds) {
+        for (Entry<String, Long> movie : oldWatchlistIds.entrySet()) {
             ContentProviderOperation op = ContentProviderOperation.newDelete(Movies.CONTENT_URI)
                     .withSelection(Movies.IMDBID + "=?", new String[] {
-                        imdbId
+                        movie.getKey()
                     }).build();
             batch.add(op);
         }
@@ -161,7 +167,7 @@ public class MoviesUpdateTask extends AsyncTask<Void, Void, Integer> {
         values.put(Movies.OVERVIEW, movie.overview);
         values.put(Movies.CERTIFICATION, movie.certification);
         values.put(Movies.IMDBID, movie.imdbId);
-        // values.put(Movies.LASTUPDATED, movie.);
+        values.put(Movies.LASTUPDATED, movie.lastUpdated.getTime());
         values.put(Movies.POSTER, movie.images.poster);
         values.put(Movies.FANART, movie.images.fanart);
         // values.put(Movies.GENRES, movie.);
