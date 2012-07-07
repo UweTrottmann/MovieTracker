@@ -18,9 +18,14 @@
 package com.uwetrottmann.movies.ui;
 
 import com.actionbarsherlock.app.SherlockListFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.uwetrottmann.movies.R;
 import com.uwetrottmann.movies.provider.MoviesContract.Movies;
 import com.uwetrottmann.movies.util.ImageDownloader;
+import com.uwetrottmann.movies.util.MoviesUpdateTask;
+import com.uwetrottmann.movies.util.TaskManager;
 import com.uwetrottmann.movies.util.TraktMoviesLoader;
 import com.uwetrottmann.movies.util.TraktMoviesLoader.TraktCategory;
 import com.uwetrottmann.movies.util.Utils;
@@ -59,6 +64,13 @@ public class LocalMoviesFragment extends SherlockListFragment implements LoaderC
 
         return f;
     }
+    
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        
+        setHasOptionsMenu(true);
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -86,6 +98,23 @@ public class LocalMoviesFragment extends SherlockListFragment implements LoaderC
 
         View detailsFragment = getSherlockActivity().findViewById(R.id.fragment_details);
         mMultiPane = detailsFragment != null && detailsFragment.getVisibility() == View.VISIBLE;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.localmovies_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_update: {
+                TaskManager.getInstance(getActivity()).tryUpdateTask(
+                        new MoviesUpdateTask(getActivity()));
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

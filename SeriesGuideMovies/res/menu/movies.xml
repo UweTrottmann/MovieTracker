@@ -2,14 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/menu_update"
-        android:icon="@drawable/ic_action_refresh"
-        android:showAsAction="always"
-        android:title="@string/menu_update"/>
-    <item
         android:id="@+id/menu_search"
         android:icon="@drawable/ic_action_search"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom"
         android:title="@string/search_hint"/>
     <item
         android:id="@+id/menu_login"
