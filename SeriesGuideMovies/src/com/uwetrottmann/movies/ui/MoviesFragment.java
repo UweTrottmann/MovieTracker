@@ -95,9 +95,10 @@ public class MoviesFragment extends SherlockListFragment implements LoaderCallba
             MovieDetailsFragment newFragment = MovieDetailsFragment.newInstance(movie.imdbId);
 
             FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.replace(R.id.fragment_details, newFragment);
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            if (!mMultiPane) {
+            if (mMultiPane) {
+                ft.replace(R.id.fragment_details, newFragment);
+            } else {
+                ft.replace(R.id.fragment_list, newFragment);
                 ft.addToBackStack(null);
             }
             ft.commit();

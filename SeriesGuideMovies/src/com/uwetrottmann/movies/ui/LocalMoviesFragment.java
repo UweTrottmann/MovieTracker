@@ -96,9 +96,10 @@ public class LocalMoviesFragment extends SherlockListFragment implements LoaderC
             MovieDetailsFragment newFragment = MovieDetailsFragment.newInstance(imdbId);
 
             FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.replace(R.id.fragment_details, newFragment);
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            if (!mMultiPane) {
+            if (mMultiPane) {
+                ft.replace(R.id.fragment_details, newFragment);
+            } else {
+                ft.replace(R.id.fragment_list, newFragment);
                 ft.addToBackStack(null);
             }
             ft.commit();
