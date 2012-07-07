@@ -22,8 +22,6 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.uwetrottmann.movies.R;
-import com.uwetrottmann.movies.util.MoviesUpdateTask;
-import com.uwetrottmann.movies.util.TaskManager;
 import com.uwetrottmann.movies.util.TraktCredentialsDialogFragment;
 import com.uwetrottmann.movies.util.TraktMoviesLoader.TraktCategory;
 
@@ -60,11 +58,6 @@ public class MoviesActivity extends SherlockFragmentActivity implements
             case R.id.menu_login: {
                 TraktCredentialsDialogFragment f = TraktCredentialsDialogFragment.newInstance();
                 f.show(getSupportFragmentManager(), "credentials-dialog");
-                return true;
-            }
-            case R.id.menu_update: {
-                TaskManager.getInstance(this).tryUpdateTask(
-                        new MoviesUpdateTask(getApplicationContext()));
                 return true;
             }
         }
