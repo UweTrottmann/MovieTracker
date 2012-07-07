@@ -26,7 +26,6 @@ import com.uwetrottmann.movies.util.TraktMoviesLoader.TraktCategory;
 import com.uwetrottmann.movies.util.Utils;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -50,6 +49,16 @@ public class LocalMoviesFragment extends SherlockListFragment implements LoaderC
     private boolean mMultiPane;
 
     private TraktCategory mListCategory;
+
+    public static LocalMoviesFragment newInstance(TraktCategory listCategory) {
+        LocalMoviesFragment f = new LocalMoviesFragment();
+
+        Bundle args = new Bundle();
+        args.putInt(TraktMoviesLoader.InitBundle.CATEGORY, listCategory.index());
+        f.setArguments(args);
+
+        return f;
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -75,7 +84,7 @@ public class LocalMoviesFragment extends SherlockListFragment implements LoaderC
 
         onListLoad(true);
 
-        View detailsFragment = getSherlockActivity().findViewById(R.id.fragment);
+        View detailsFragment = getSherlockActivity().findViewById(R.id.fragment_details);
         mMultiPane = detailsFragment != null && detailsFragment.getVisibility() == View.VISIBLE;
     }
 
@@ -84,20 +93,15 @@ public class LocalMoviesFragment extends SherlockListFragment implements LoaderC
         Cursor movie = (Cursor) l.getItemAtPosition(position);
         if (movie != null && movie.getString(MoviesQuery.IMDBID) != null) {
             final String imdbId = movie.getString(MoviesQuery.IMDBID);
-            if (mMultiPane) {
-                MovieDetailsFragment newFragment = MovieDetailsFragment.newInstance(imdbId);
+            MovieDetailsFragment newFragment = MovieDetailsFragment.newInstance(imdbId);
 
-                // Execute a transaction, replacing any existing
-                // fragment with this one inside the frame.
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.fragment, newFragment);
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                ft.commit();
-            } else {
-                Intent i = new Intent(getSherlockActivity(), MovieDetailsActivity.class);
-                i.putExtra(MovieDetailsFragment.InitBundle.IMDBID, imdbId);
-                startActivity(i);
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_details, newFragment);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            if (!mMultiPane) {
+                ft.addToBackStack(null);
             }
+            ft.commit();
         }
     }
 
@@ -223,7 +227,7 @@ public class LocalMoviesFragment extends SherlockListFragment implements LoaderC
         int OVERVIEW = 2;
 
         int POSTER = 3;
-        
+
         int IMDBID = 4;
 
     }

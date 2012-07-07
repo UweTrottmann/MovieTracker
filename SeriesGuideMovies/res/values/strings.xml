@@ -21,7 +21,11 @@
     <!-- Movie lists -->
     <string name="movies_empty">No movies here.</string>
     <string name="please_setup_trakt">Setup a trakt account to display this list.</string>
-
+    <string-array name="movie_lists">
+        <item>Trending</item>
+        <item>Watchlist</item>
+    </string-array>
+    
     <!-- Movie details -->
     <string name="details_empty">No details here.</string>
     <string name="actors">Actors</string>

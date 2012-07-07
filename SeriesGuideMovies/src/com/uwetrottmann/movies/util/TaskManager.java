@@ -23,7 +23,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 public class TaskManager {
-    
+
     private static TaskManager _instance;
 
     private MoviesUpdateTask mUpdateTask;
@@ -40,18 +40,18 @@ public class TaskManager {
         }
         return _instance;
     }
-    
+
     public synchronized void tryUpdateTask(MoviesUpdateTask task) {
         if (!isUpdateTaskRunning(true)) {
             mUpdateTask = task;
             task.execute();
         }
     }
-    
+
     public synchronized void onTaskCompleted() {
         mUpdateTask = null;
     }
-    
+
     public boolean isUpdateTaskRunning(boolean displayWarning) {
         if (mUpdateTask != null) {
             if (displayWarning) {
