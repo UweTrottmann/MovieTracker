@@ -176,6 +176,7 @@ public class MoviesProvider extends ContentProvider {
             final ContentProviderResult[] results = new ContentProviderResult[numOperations];
             for (int i = 0; i < numOperations; i++) {
                 results[i] = operations.get(i).apply(this, results, i);
+                db.yieldIfContendedSafely();
             }
             db.setTransactionSuccessful();
             return results;
