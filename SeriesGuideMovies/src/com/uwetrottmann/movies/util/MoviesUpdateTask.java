@@ -103,12 +103,14 @@ public class MoviesUpdateTask extends AsyncTask<Void, Void, Integer> {
             Long movieLastUpdated = oldWatchlistIds.remove(movie.imdbId);
             if (movieLastUpdated != null) {
                 // update (only if there are changes
-                if (movieLastUpdated < movie.lastUpdated.getTime()) {
-                    op = ContentProviderOperation.newUpdate(Movies.CONTENT_URI)
-                            .withSelection(Movies.IMDBID + "=?", new String[] {
-                                movie.imdbId
-                            }).withValues(values).build();
-                }
+                // TODO ask whether lastupdated will be included in watchlist
+                // call again
+                // if (movieLastUpdated < movie.lastUpdated.getTime()) {
+                op = ContentProviderOperation.newUpdate(Movies.CONTENT_URI)
+                        .withSelection(Movies.IMDBID + "=?", new String[] {
+                            movie.imdbId
+                        }).withValues(values).build();
+                // }
             } else {
                 // insert
                 op = ContentProviderOperation.newInsert(Movies.CONTENT_URI).withValues(values)
@@ -167,7 +169,9 @@ public class MoviesUpdateTask extends AsyncTask<Void, Void, Integer> {
         values.put(Movies.OVERVIEW, movie.overview);
         values.put(Movies.CERTIFICATION, movie.certification);
         values.put(Movies.IMDBID, movie.imdbId);
-        values.put(Movies.LASTUPDATED, movie.lastUpdated.getTime());
+        if (movie.lastUpdated != null) {
+            values.put(Movies.LASTUPDATED, movie.lastUpdated.getTime());
+        }
         values.put(Movies.POSTER, movie.images.poster);
         values.put(Movies.FANART, movie.images.fanart);
         // values.put(Movies.GENRES, movie.);
