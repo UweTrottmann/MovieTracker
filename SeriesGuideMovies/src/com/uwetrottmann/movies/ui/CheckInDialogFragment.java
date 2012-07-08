@@ -18,6 +18,7 @@
 package com.uwetrottmann.movies.ui;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
+import com.uwetrottmann.androidutils.AndroidUtils;
 import com.uwetrottmann.movies.R;
 import com.uwetrottmann.movies.util.AnalyticsUtils;
 import com.uwetrottmann.movies.util.TraktCredentialsDialogFragment;
@@ -138,7 +139,7 @@ public class CheckInDialogFragment extends SherlockDialogFragment {
                 if (imdbId == null || imdbId.length() == 0) {
                     return;
                 }
-                if (!Utils.isNetworkConnected(getActivity())) {
+                if (!AndroidUtils.isNetworkConnected(getActivity())) {
                     Toast.makeText(getActivity(), R.string.offline, Toast.LENGTH_LONG).show();
                     return;
                 }

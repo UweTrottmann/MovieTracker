@@ -21,6 +21,7 @@ import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.uwetrottmann.androidutils.AndroidUtils;
 import com.uwetrottmann.movies.R;
 import com.uwetrottmann.movies.provider.MoviesContract.Movies;
 import com.uwetrottmann.movies.util.ImageDownloader;
@@ -87,7 +88,7 @@ public class LocalMoviesFragment extends SherlockListFragment implements LoaderC
         final ListView list = getListView();
         list.setDivider(getResources().getDrawable(R.drawable.divider_horizontal_holo_dark));
         list.setSelector(R.drawable.list_selector_holo_dark);
-        list.setClipToPadding(Utils.isHoneycombOrHigher() ? false : true);
+        list.setClipToPadding(AndroidUtils.isHoneycombOrHigher() ? false : true);
         final float scale = getResources().getDisplayMetrics().density;
         int layoutPadding = (int) (10 * scale + 0.5f);
         int defaultPadding = (int) (8 * scale + 0.5f);

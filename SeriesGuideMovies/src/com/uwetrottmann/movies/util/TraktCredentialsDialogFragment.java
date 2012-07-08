@@ -22,6 +22,7 @@ import com.jakewharton.apibuilder.ApiException;
 import com.jakewharton.trakt.ServiceManager;
 import com.jakewharton.trakt.TraktException;
 import com.jakewharton.trakt.entities.Response;
+import com.uwetrottmann.androidutils.AndroidUtils;
 import com.uwetrottmann.movies.R;
 import com.uwetrottmann.movies.entities.TraktStatus;
 import com.uwetrottmann.movies.ui.AppPreferences;
@@ -130,7 +131,7 @@ public class TraktCredentialsDialogFragment extends SherlockDialogFragment {
                         }
 
                         // check for connectivity
-                        if (!Utils.isNetworkConnected(context)) {
+                        if (!AndroidUtils.isNetworkConnected(context)) {
                             Response r = new Response();
                             r.status = TraktStatus.FAILURE;
                             r.error = context.getString(R.string.offline);

@@ -18,6 +18,8 @@
 
 package com.uwetrottmann.movies.util;
 
+import com.uwetrottmann.androidutils.AndroidUtils;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -186,7 +188,7 @@ public class ImageDownloader {
                     + CompressFormat.JPEG.name();
             imagefile = new File(mDiskCacheDir + "/" + filename);
 
-            if (Utils.isExtStorageAvailable()) {
+            if (AndroidUtils.isExtStorageAvailable()) {
                 // try to get bitmap from disk cache first
                 if (imagefile.exists()) {
                     // disk cache hit
@@ -223,9 +225,9 @@ public class ImageDownloader {
 
                     // write directly to disk
                     Bitmap bitmap;
-                    if (isDiskCaching && Utils.isExtStorageAvailable()) {
+                    if (isDiskCaching && AndroidUtils.isExtStorageAvailable()) {
                         FileOutputStream outputstream = new FileOutputStream(imagefile);
-                        Utils.copy(new FlushedInputStream(inputStream), outputstream);
+                        AndroidUtils.copy(new FlushedInputStream(inputStream), outputstream);
                         outputstream.close();
                         bitmap = BitmapFactory.decodeFile(imagefile.getAbsolutePath());
                     } else {

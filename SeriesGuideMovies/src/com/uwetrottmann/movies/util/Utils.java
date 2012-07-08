@@ -44,46 +44,11 @@ import java.security.NoSuchAlgorithmException;
 
 public class Utils {
 
-    private static final int DEFAULT_BUFFER_SIZE = 8192;
-
     private static final String TAG = "Utils";
 
     private static ServiceManager sServiceManagerWithAuthInstance;
 
     private static ServiceManager sServiceManagerInstance;
-
-    public static boolean isHoneycombOrHigher() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
-    }
-
-    public static boolean isFroyoOrHigher() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO;
-    }
-
-    public static boolean isExtStorageAvailable() {
-        return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
-    }
-
-    public static boolean isNetworkConnected(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        if (activeNetworkInfo != null) {
-            return activeNetworkInfo.isConnected();
-        }
-        return false;
-    }
-
-    public static boolean isWifiConnected(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo wifiNetworkInfo = connectivityManager
-                .getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        if (wifiNetworkInfo != null) {
-            return wifiNetworkInfo.isConnected();
-        }
-        return false;
-    }
 
     public static boolean isTraktCredentialsValid(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context
@@ -92,38 +57,6 @@ public class Utils {
         String password = prefs.getString(AppPreferences.KEY_TRAKTPWD, "");
 
         return (!username.equals("") && !password.equals(""));
-    }
-
-    public static void copyFile(File src, File dst) throws IOException {
-        FileInputStream in = new FileInputStream(src);
-        FileOutputStream out = new FileOutputStream(dst);
-        FileChannel inChannel = in.getChannel();
-        FileChannel outChannel = out.getChannel();
-
-        try {
-            inChannel.transferTo(0, inChannel.size(), outChannel);
-        } finally {
-            if (inChannel != null) {
-                inChannel.close();
-            }
-            if (outChannel != null) {
-                outChannel.close();
-            }
-        }
-
-        in.close();
-        out.close();
-    }
-
-    public static int copy(InputStream input, OutputStream output) throws IOException {
-        byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
-        int count = 0;
-        int n = 0;
-        while (-1 != (n = input.read(buffer))) {
-            output.write(buffer, 0, n);
-            count += n;
-        }
-        return count;
     }
 
     /**

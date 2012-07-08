@@ -19,12 +19,12 @@ package com.uwetrottmann.movies.ui;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.jakewharton.trakt.entities.Movie;
+import com.uwetrottmann.androidutils.AndroidUtils;
 import com.uwetrottmann.movies.Constants;
 import com.uwetrottmann.movies.R;
 import com.uwetrottmann.movies.util.ImageDownloader;
 import com.uwetrottmann.movies.util.TraktMoviesLoader;
 import com.uwetrottmann.movies.util.TraktMoviesLoader.TraktCategory;
-import com.uwetrottmann.movies.util.Utils;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -81,7 +81,7 @@ public class MovieDetailsFragment extends SherlockListFragment implements
         list.setSelector(R.color.transparent);
 
         // nag about no connectivity
-        if (!Utils.isNetworkConnected(getActivity())) {
+        if (!AndroidUtils.isNetworkConnected(getActivity())) {
             setEmptyText(getString(R.string.offline));
             setListShown(true);
         } else {
