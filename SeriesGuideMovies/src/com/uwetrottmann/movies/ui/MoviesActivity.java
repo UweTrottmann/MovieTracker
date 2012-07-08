@@ -21,10 +21,12 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.uwetrottmann.androidutils.AndroidUtils;
 import com.uwetrottmann.movies.R;
 import com.uwetrottmann.movies.util.TraktCredentialsDialogFragment;
 import com.uwetrottmann.movies.util.TraktMoviesLoader.TraktCategory;
 
+import android.annotation.TargetApi;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
@@ -74,6 +76,7 @@ public class MoviesActivity extends SherlockFragmentActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+    @TargetApi(9)
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
         Fragment newFragment = null;
@@ -97,7 +100,11 @@ public class MoviesActivity extends SherlockFragmentActivity implements
             Editor editor = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                     .edit();
             editor.putInt(AppPreferences.KEY_NAVSELECTION, itemPosition);
-            editor.commit();
+            if (AndroidUtils.isGingerbreadOrHigher()) {
+                editor.apply();
+            } else {
+                editor.commit();
+            }
 
             return true;
         } else {
