@@ -8,6 +8,5 @@
 	<classpathentry kind="lib" path="libs/apibuilder-1.1.1.jar"/>
 	<classpathentry kind="lib" path="libs/myjson-1.7.1.jar"/>
 	<classpathentry kind="lib" path="libs/libGoogleAnalytics.jar"/>
-	<classpathentry kind="src" path="/AndroidUtils"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
