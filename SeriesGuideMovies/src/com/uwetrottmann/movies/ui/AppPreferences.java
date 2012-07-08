@@ -31,4 +31,6 @@ public class AppPreferences {
 
     public static final String KEY_SHAREWITHTRAKT = "com.uwetrottmann.movies.share.trakt";
 
+    public static final String KEY_NAVSELECTION = "com.uwetrottmann.movies.navselections";
+
 }

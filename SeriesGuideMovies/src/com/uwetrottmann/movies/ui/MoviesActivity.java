@@ -25,7 +25,11 @@ import com.uwetrottmann.movies.R;
 import com.uwetrottmann.movies.util.TraktCredentialsDialogFragment;
 import com.uwetrottmann.movies.util.TraktMoviesLoader.TraktCategory;
 
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.ArrayAdapter;
 
@@ -44,6 +48,12 @@ public class MoviesActivity extends SherlockFragmentActivity implements
                 R.array.movie_lists, R.layout.sherlock_spinner_item);
         mActionBarList.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
         actionBar.setListNavigationCallbacks(mActionBarList, this);
+
+        // try to restore previously set nav item
+        final SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext());
+        final int navItem = prefs.getInt(AppPreferences.KEY_NAVSELECTION, 0);
+        actionBar.setSelectedNavigationItem(navItem);
     }
 
     @Override
@@ -66,25 +76,32 @@ public class MoviesActivity extends SherlockFragmentActivity implements
 
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+        Fragment newFragment = null;
         switch (itemPosition) {
-            case 0: {
+            case 0:
+            default:
                 // trending
-                MoviesFragment newFragment = MoviesFragment.newInstance(TraktCategory.TRENDING);
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.fragment_list, newFragment);
-                ft.commit();
-                return true;
-            }
-            case 1: {
+                newFragment = MoviesFragment.newInstance(TraktCategory.TRENDING);
+                break;
+            case 1:
                 // watchlist
-                LocalMoviesFragment newFragment = LocalMoviesFragment
-                        .newInstance(TraktCategory.WATCHLIST);
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.fragment_list, newFragment);
-                ft.commit();
-                return true;
-            }
+                newFragment = LocalMoviesFragment.newInstance(TraktCategory.WATCHLIST);
+                break;
         }
-        return false;
+        if (newFragment != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_list, newFragment);
+            ft.commit();
+
+            // save the selected filter back to settings
+            Editor editor = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                    .edit();
+            editor.putInt(AppPreferences.KEY_NAVSELECTION, itemPosition);
+            editor.commit();
+
+            return true;
+        } else {
+            return false;
+        }
     }
 }
