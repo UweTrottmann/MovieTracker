@@ -2,9 +2,7 @@
 <resources>
 
     <style name="SeriesGuideTheme" parent="Theme.Sherlock.ForceOverflow">
-        <item name="vpiCirclePageIndicatorStyle">@style/Widget.CirclePageIndicator</item>
         <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
-        <item name="vpiTabTextStyle">@style/Widget.TabPageIndicator.Text</item>
         <item name="actionBarItemBackground">@drawable/selectable_background_seriesguidemoviestheme</item>
         <item name="dropDownListViewStyle">@style/seriesguidemoviestheme_DropDownListView</item>
         <item name="actionBarTabStyle">@style/seriesguidemoviestheme_ActionBarTabStyle</item>
