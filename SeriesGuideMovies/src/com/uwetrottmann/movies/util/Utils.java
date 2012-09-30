@@ -63,6 +63,8 @@ public class Utils {
             boolean refreshCredentials) throws Exception {
         if (sServiceManagerWithAuthInstance == null) {
             sServiceManagerWithAuthInstance = new ServiceManager();
+            sServiceManagerWithAuthInstance.setReadTimeout(10000);
+            sServiceManagerWithAuthInstance.setConnectionTimeout(15000);
             sServiceManagerWithAuthInstance.setApiKey(context.getResources().getString(
                     R.string.trakt_apikey));
             // this made some problems, so sadly disabled for now
@@ -95,6 +97,8 @@ public class Utils {
     public static synchronized ServiceManager getServiceManager(Context context) {
         if (sServiceManagerInstance == null) {
             sServiceManagerInstance = new ServiceManager();
+            sServiceManagerInstance.setReadTimeout(10000);
+            sServiceManagerInstance.setConnectionTimeout(15000);
             sServiceManagerInstance.setApiKey(context.getResources().getString(
                     R.string.trakt_apikey));
             // this made some problems, so sadly disabled for now
@@ -146,6 +150,8 @@ public class Utils {
             Context context) {
         if (sTmdbServiceManagerInstance == null) {
             sTmdbServiceManagerInstance = new com.uwetrottmann.tmdb.ServiceManager();
+            sTmdbServiceManagerInstance.setReadTimeout(10000);
+            sTmdbServiceManagerInstance.setConnectionTimeout(15000);
             sTmdbServiceManagerInstance.setApiKey(context.getResources().getString(
                     R.string.tmdb_apikey));
         }
