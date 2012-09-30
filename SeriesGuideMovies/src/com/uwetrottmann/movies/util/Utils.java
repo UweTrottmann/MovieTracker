@@ -17,28 +17,17 @@
 
 package com.uwetrottmann.movies.util;
 
-import com.jakewharton.trakt.ServiceManager;
-import com.uwetrottmann.movies.R;
-import com.uwetrottmann.movies.ui.AppPreferences;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.Build;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.channels.FileChannel;
+import com.jakewharton.trakt.ServiceManager;
+import com.uwetrottmann.movies.R;
+import com.uwetrottmann.movies.ui.AppPreferences;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -49,6 +38,8 @@ public class Utils {
     private static ServiceManager sServiceManagerWithAuthInstance;
 
     private static ServiceManager sServiceManagerInstance;
+
+    private static com.uwetrottmann.tmdb.ServiceManager sTmdbServiceManagerInstance;
 
     public static boolean isTraktCredentialsValid(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context
@@ -146,6 +137,20 @@ public class Utils {
             Log.w(TAG, "Could not get SHA-1 message digest instance", e);
         }
         return null;
+    }
+
+    /**
+     * Get a tmdb-java ServiceManager with our API key set.
+     */
+    public static synchronized com.uwetrottmann.tmdb.ServiceManager getTmdbServiceManager(
+            Context context) {
+        if (sTmdbServiceManagerInstance == null) {
+            sTmdbServiceManagerInstance = new com.uwetrottmann.tmdb.ServiceManager();
+            sTmdbServiceManagerInstance.setApiKey(context.getResources().getString(
+                    R.string.tmdb_apikey));
+        }
+
+        return sTmdbServiceManagerInstance;
     }
 
 }

@@ -17,15 +17,6 @@
 
 package com.uwetrottmann.movies.ui;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.uwetrottmann.androidutils.AndroidUtils;
-import com.uwetrottmann.movies.R;
-import com.uwetrottmann.movies.util.TraktCredentialsDialogFragment;
-import com.uwetrottmann.movies.util.TraktMoviesLoader.TraktCategory;
-
 import android.annotation.TargetApi;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -34,6 +25,15 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.ArrayAdapter;
+
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.uwetrottmann.androidutils.AndroidUtils;
+import com.uwetrottmann.movies.R;
+import com.uwetrottmann.movies.util.TraktCredentialsDialogFragment;
+import com.uwetrottmann.movies.util.TraktMoviesLoader.TraktCategory;
 
 public class MoviesActivity extends SherlockFragmentActivity implements
         ActionBar.OnNavigationListener {
@@ -83,11 +83,11 @@ public class MoviesActivity extends SherlockFragmentActivity implements
         switch (itemPosition) {
             case 0:
             default:
-                // trending
-                newFragment = MoviesFragment.newInstance(TraktCategory.TRENDING);
+                // now playing (TMDb)
+                newFragment = MoviesFragment.newInstance();
                 break;
             case 1:
-                // watchlist
+                // watchlist (trakt)
                 newFragment = LocalMoviesFragment.newInstance(TraktCategory.WATCHLIST);
                 break;
         }

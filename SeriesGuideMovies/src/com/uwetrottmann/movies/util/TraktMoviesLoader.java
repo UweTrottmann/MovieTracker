@@ -17,21 +17,18 @@
 
 package com.uwetrottmann.movies.util;
 
-import com.jakewharton.apibuilder.ApiException;
-import com.jakewharton.trakt.ServiceManager;
-import com.jakewharton.trakt.TraktException;
-import com.jakewharton.trakt.entities.Movie;
-import com.uwetrottmann.movies.ui.MovieDetailsFragment;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
+import android.util.SparseArray;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import com.jakewharton.apibuilder.ApiException;
+import com.jakewharton.trakt.ServiceManager;
+import com.jakewharton.trakt.TraktException;
+import com.jakewharton.trakt.entities.Movie;
+
 import java.util.List;
-import java.util.Map;
 
 public class TraktMoviesLoader extends AsyncTaskLoader<List<Movie>> {
 
@@ -64,23 +61,11 @@ public class TraktMoviesLoader extends AsyncTaskLoader<List<Movie>> {
             }
 
             switch (category) {
-                case TRENDING: {
-                    return serviceManager.movieService().trending().fire();
-                }
                 case WATCHLIST: {
                     // there will always be a username as the fragment using
                     // this only loads with valid credentials
                     return serviceManager.userService()
                             .watchlistMovies(Utils.getTraktUsername(getContext())).fire();
-                }
-                case SUMMARY: {
-                    // will just return a single item
-                    Movie movie = serviceManager.movieService()
-                            .summary(mArgs.getString(MovieDetailsFragment.InitBundle.IMDBID))
-                            .fire();
-                    ArrayList<Movie> list = new ArrayList<Movie>();
-                    list.add(movie);
-                    return list;
                 }
             }
         } catch (TraktException e) {
@@ -180,7 +165,7 @@ public class TraktMoviesLoader extends AsyncTaskLoader<List<Movie>> {
     }
 
     public enum TraktCategory {
-        TRENDING(0), SUMMARY(1), WATCHLIST(2);
+        WATCHLIST(0);
 
         private final int index;
 
@@ -192,7 +177,7 @@ public class TraktMoviesLoader extends AsyncTaskLoader<List<Movie>> {
             return index;
         }
 
-        private static final Map<Integer, TraktCategory> INT_MAPPING = new HashMap<Integer, TraktCategory>();
+        private static final SparseArray<TraktCategory> INT_MAPPING = new SparseArray<TraktCategory>();
 
         static {
             for (TraktCategory via : TraktCategory.values()) {

@@ -17,15 +17,6 @@
 
 package com.uwetrottmann.movies.ui;
 
-import com.actionbarsherlock.app.SherlockListFragment;
-import com.jakewharton.trakt.entities.Movie;
-import com.uwetrottmann.androidutils.AndroidUtils;
-import com.uwetrottmann.movies.R;
-import com.uwetrottmann.movies.util.ImageDownloader;
-import com.uwetrottmann.movies.util.TraktMoviesLoader;
-import com.uwetrottmann.movies.util.TraktMoviesLoader.TraktCategory;
-import com.uwetrottmann.movies.util.Utils;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -39,24 +30,25 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.SherlockListFragment;
+import com.uwetrottmann.androidutils.AndroidUtils;
+import com.uwetrottmann.movies.R;
+import com.uwetrottmann.movies.loaders.TmdbMoviesLoader;
+import com.uwetrottmann.movies.util.ImageDownloader;
+import com.uwetrottmann.tmdb.entities.Movie;
+
 import java.util.List;
 
 public class MoviesFragment extends SherlockListFragment implements LoaderCallbacks<List<Movie>> {
 
     private static final int MOVIES_LOADER_ID = 0;
 
-    private TraktMoviesAdapter mAdapter;
+    private TmdbMoviesAdapter mAdapter;
 
     private boolean mMultiPane;
 
-    private TraktCategory mListCategory;
-
-    public static MoviesFragment newInstance(TraktCategory listCategory) {
+    public static MoviesFragment newInstance() {
         MoviesFragment f = new MoviesFragment();
-
-        Bundle args = new Bundle();
-        args.putInt(TraktMoviesLoader.InitBundle.CATEGORY, listCategory.index());
-        f.setArguments(args);
 
         return f;
     }
@@ -66,11 +58,8 @@ public class MoviesFragment extends SherlockListFragment implements LoaderCallba
         super.onActivityCreated(savedInstanceState);
 
         // set list adapter
-        mAdapter = new TraktMoviesAdapter(getActivity());
+        mAdapter = new TmdbMoviesAdapter(getActivity());
         setListAdapter(mAdapter);
-
-        mListCategory = TraktCategory.fromValue(getArguments().getInt(
-                TraktMoviesLoader.InitBundle.CATEGORY));
 
         // style list view
         final ListView list = getListView();
@@ -92,8 +81,8 @@ public class MoviesFragment extends SherlockListFragment implements LoaderCallba
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         Movie movie = (Movie) l.getItemAtPosition(position);
-        if (movie != null && movie.imdbId != null) {
-            MovieDetailsFragment newFragment = MovieDetailsFragment.newInstance(movie.imdbId);
+        if (movie != null && movie.id != null) {
+            MovieDetailsFragment newFragment = MovieDetailsFragment.newInstance(movie.id);
 
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             if (mMultiPane) {
@@ -113,25 +102,19 @@ public class MoviesFragment extends SherlockListFragment implements LoaderCallba
             setListShown(true);
         } else {
             // nag about a trakt account if trying to display auth-only lists
-            if (mListCategory != TraktCategory.WATCHLIST
-                    || Utils.isTraktCredentialsValid(getActivity())) {
-                setEmptyText(getString(R.string.movies_empty));
-                setListShown(false);
-                if (isInitialLoad) {
-                    getLoaderManager().initLoader(MOVIES_LOADER_ID, getArguments(), this);
-                } else {
-                    getLoaderManager().restartLoader(MOVIES_LOADER_ID, getArguments(), this);
-                }
+            setEmptyText(getString(R.string.movies_empty));
+            setListShown(false);
+            if (isInitialLoad) {
+                getLoaderManager().initLoader(MOVIES_LOADER_ID, getArguments(), this);
             } else {
-                setEmptyText(getString(R.string.please_setup_trakt));
-                setListShown(true);
+                getLoaderManager().restartLoader(MOVIES_LOADER_ID, getArguments(), this);
             }
         }
     }
 
     @Override
     public Loader<List<Movie>> onCreateLoader(int id, Bundle args) {
-        return new TraktMoviesLoader(getSherlockActivity(), args);
+        return new TmdbMoviesLoader(getSherlockActivity());
     }
 
     @Override
@@ -150,7 +133,7 @@ public class MoviesFragment extends SherlockListFragment implements LoaderCallba
         mAdapter.setData(null);
     }
 
-    private static class TraktMoviesAdapter extends ArrayAdapter<Movie> {
+    private static class TmdbMoviesAdapter extends ArrayAdapter<Movie> {
 
         private LayoutInflater mLayoutInflater;
 
@@ -158,7 +141,7 @@ public class MoviesFragment extends SherlockListFragment implements LoaderCallba
 
         private ImageDownloader mImageDownloader;
 
-        public TraktMoviesAdapter(Context context) {
+        public TmdbMoviesAdapter(Context context) {
             super(context, LAYOUT);
             mLayoutInflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -184,10 +167,10 @@ public class MoviesFragment extends SherlockListFragment implements LoaderCallba
             // set text properties immediately
             Movie item = getItem(position);
             viewHolder.title.setText(item.title);
-            viewHolder.overview.setText(item.overview);
-            if (item.images.poster != null) {
-                String posterPath = item.images.poster
-                        .substring(0, item.images.poster.length() - 4) + "-138.jpg";
+            viewHolder.overview.setText("");
+            if (item.poster_path != null) {
+                // TODO get image path from TMDb, not static
+                String posterPath = "http://cf2.imgobject.com/t/p/w154" + item.poster_path;
                 mImageDownloader.download(posterPath, viewHolder.poster, false);
             }
 
@@ -197,8 +180,8 @@ public class MoviesFragment extends SherlockListFragment implements LoaderCallba
         public void setData(List<Movie> data) {
             clear();
             if (data != null) {
-                for (Movie userProfile : data) {
-                    add(userProfile);
+                for (Movie movie : data) {
+                    add(movie);
                 }
             }
         }

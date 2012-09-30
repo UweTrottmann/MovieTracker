@@ -17,6 +17,20 @@
 
 package com.uwetrottmann.movies.ui;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.os.Bundle;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.widget.SimpleCursorAdapter;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -31,21 +45,6 @@ import com.uwetrottmann.movies.util.TraktMoviesLoader;
 import com.uwetrottmann.movies.util.TraktMoviesLoader.TraktCategory;
 import com.uwetrottmann.movies.util.Utils;
 
-import android.content.Context;
-import android.database.Cursor;
-import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.SimpleCursorAdapter;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
-
 public class LocalMoviesFragment extends SherlockListFragment implements LoaderCallbacks<Cursor> {
 
     private static final int MOVIES_LOADER_ID = 0;
@@ -53,8 +52,6 @@ public class LocalMoviesFragment extends SherlockListFragment implements LoaderC
     private MoviesCursorAdapter mAdapter;
 
     private boolean mMultiPane;
-
-    private TraktCategory mListCategory;
 
     public static LocalMoviesFragment newInstance(TraktCategory listCategory) {
         LocalMoviesFragment f = new LocalMoviesFragment();
@@ -65,11 +62,11 @@ public class LocalMoviesFragment extends SherlockListFragment implements LoaderC
 
         return f;
     }
-    
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
         setHasOptionsMenu(true);
     }
 
@@ -80,9 +77,6 @@ public class LocalMoviesFragment extends SherlockListFragment implements LoaderC
         // set list adapter
         mAdapter = new MoviesCursorAdapter(getActivity());
         setListAdapter(mAdapter);
-
-        mListCategory = TraktCategory.fromValue(getArguments().getInt(
-                TraktMoviesLoader.InitBundle.CATEGORY));
 
         // style list view
         final ListView list = getListView();
@@ -120,20 +114,22 @@ public class LocalMoviesFragment extends SherlockListFragment implements LoaderC
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        Cursor movie = (Cursor) l.getItemAtPosition(position);
-        if (movie != null && movie.getString(MoviesQuery.IMDBID) != null) {
-            final String imdbId = movie.getString(MoviesQuery.IMDBID);
-            MovieDetailsFragment newFragment = MovieDetailsFragment.newInstance(imdbId);
-
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            if (mMultiPane) {
-                ft.replace(R.id.fragment_details, newFragment);
-            } else {
-                ft.replace(R.id.fragment_list, newFragment);
-                ft.addToBackStack(null);
-            }
-            ft.commit();
-        }
+        // TODO add tmdbId and use that...
+        // Cursor movie = (Cursor) l.getItemAtPosition(position);
+        // if (movie != null && movie.getString(MoviesQuery.IMDBID) != null) {
+        // final String imdbId = movie.getString(MoviesQuery.IMDBID);
+        // MovieDetailsFragment newFragment =
+        // MovieDetailsFragment.newInstance(imdbId);
+        //
+        // FragmentTransaction ft = getFragmentManager().beginTransaction();
+        // if (mMultiPane) {
+        // ft.replace(R.id.fragment_details, newFragment);
+        // } else {
+        // ft.replace(R.id.fragment_list, newFragment);
+        // ft.addToBackStack(null);
+        // }
+        // ft.commit();
+        // }
     }
 
     public void onListLoad(boolean isInitialLoad) {
