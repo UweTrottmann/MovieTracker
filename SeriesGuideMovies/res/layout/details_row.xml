@@ -25,7 +25,7 @@
             android:background="@color/fade_black"
             android:padding="@dimen/default_padding"
             android:text="@string/app_name"
-            android:textAppearance="@style/TextAppearance.Large.Light" />
+            android:textAppearance="@style/TextAppearance.XLarge.Light" />
     </FrameLayout>
 
     <RelativeLayout
@@ -46,7 +46,6 @@
                 android:id="@+id/checkinButton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:nextFocusLeft="@+id/calendarButton"
                 android:text="@string/checkin" />
         </LinearLayout>
 
@@ -55,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/buttonbar"
-            android:padding="@dimen/default_padding"
+            android:paddingBottom="@dimen/default_padding"
             android:text="@string/details_empty"
             android:textAppearance="@style/TextAppearance" />
 
@@ -98,8 +97,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:layout_marginLeft="@dimen/large_padding"
-        android:layout_marginRight="@dimen/large_padding"
+        android:layout_marginLeft="@dimen/default_padding"
+        android:layout_marginRight="@dimen/default_padding"
         android:baselineAligned="false"
         android:gravity="center_vertical"
         android:orientation="horizontal" >

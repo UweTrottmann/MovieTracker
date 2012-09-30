@@ -51,8 +51,6 @@ public class LocalMoviesFragment extends SherlockListFragment implements LoaderC
 
     private MoviesCursorAdapter mAdapter;
 
-    private boolean mMultiPane;
-
     public static LocalMoviesFragment newInstance(TraktCategory listCategory) {
         LocalMoviesFragment f = new LocalMoviesFragment();
 
@@ -90,9 +88,6 @@ public class LocalMoviesFragment extends SherlockListFragment implements LoaderC
         list.setFastScrollEnabled(true);
 
         onListLoad(true);
-
-        View detailsFragment = getSherlockActivity().findViewById(R.id.fragment_details);
-        mMultiPane = detailsFragment != null && detailsFragment.getVisibility() == View.VISIBLE;
     }
 
     @Override
