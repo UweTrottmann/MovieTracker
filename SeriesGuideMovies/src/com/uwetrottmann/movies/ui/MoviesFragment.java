@@ -51,8 +51,6 @@ public class MoviesFragment extends SherlockFragment implements LoaderCallbacks<
 
     private TmdbMoviesAdapter mAdapter;
 
-    private boolean mMultiPane;
-
     private GridView mGrid;
 
     public static MoviesFragment newInstance() {
@@ -90,9 +88,6 @@ public class MoviesFragment extends SherlockFragment implements LoaderCallbacks<
         }
 
         onListLoad(true);
-
-        View detailsFragment = getSherlockActivity().findViewById(R.id.fragment_details);
-        mMultiPane = detailsFragment != null && detailsFragment.getVisibility() == View.VISIBLE;
     }
 
     @TargetApi(16)
