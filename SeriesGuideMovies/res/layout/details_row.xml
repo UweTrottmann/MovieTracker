@@ -25,19 +25,22 @@
             android:background="@color/fade_black"
             android:padding="@dimen/default_padding"
             android:text="@string/app_name"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="@style/TextAppearance.Large.Light" />
     </FrameLayout>
 
     <RelativeLayout
         android:id="@+id/content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/large_padding"
+        android:layout_marginRight="@dimen/large_padding" >
 
         <LinearLayout
             android:id="@+id/buttonbar"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-            android:layout_marginBottom="@dimen/default_padding" >
+            android:layout_marginBottom="@dimen/default_padding"
+            android:layout_marginTop="@dimen/default_padding" >
 
             <Button
                 android:id="@+id/checkinButton"
@@ -45,80 +48,16 @@
                 android:layout_height="match_parent"
                 android:nextFocusLeft="@+id/calendarButton"
                 android:text="@string/checkin" />
-
-            <ImageButton
-                android:id="@+id/watchedButton"
-                android:layout_width="48dp"
-                android:layout_height="match_parent"
-                android:background="@drawable/list_selector_holo_dark"
-                android:contentDescription="@string/seen"
-                android:paddingLeft="@dimen/default_padding"
-                android:paddingRight="@dimen/default_padding"
-                android:src="@drawable/ic_trakt_seen" />
-
-            <ImageButton
-                android:id="@+id/collectedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/list_selector_holo_dark"
-                android:contentDescription="@string/collect"
-                android:paddingLeft="@dimen/default_padding"
-                android:paddingRight="@dimen/default_padding"
-                android:src="@drawable/ic_action_collect" />
-
-            <ImageButton
-                android:id="@+id/calendarButton"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/list_selector_holo_dark"
-                android:contentDescription="@string/addtocalendar"
-                android:nextFocusRight="@+id/checkinButton"
-                android:paddingLeft="@dimen/default_padding"
-                android:paddingRight="@dimen/default_padding"
-                android:src="@drawable/ic_action_calendar" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/traktrating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/buttonbar"
-            android:padding="@dimen/default_padding" >
-
-            <TextView
-                android:id="@+id/lovevalue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/inline_padding"
-                android:paddingBottom="2dp"
-                android:text="@string/notraktrating"
-                android:textSize="@dimen/text_size_xlarge" />
-
-            <ImageView
-                android:id="@+id/traktlove"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/trakt_love_large" />
-
-            <TextView
-                android:id="@+id/lovevotes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/inline_padding"
-                android:textSize="@dimen/text_size_xmedium" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/traktrating"
+            android:layout_below="@+id/buttonbar"
             android:padding="@dimen/default_padding"
-            android:text="Medium Text"
-            android:textSize="@dimen/text_size_medium" />
+            android:text="@string/details_empty"
+            android:textAppearance="@style/TextAppearance" />
 
         <TextView
             android:id="@+id/labelActors"
@@ -147,65 +86,53 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/labelCrew" />
-
-        <include
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/crew"
-            android:layout_marginTop="@dimen/inline_padding"
-            layout="@layout/holodivider" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_below="@+id/divider"
-            android:baselineAligned="false"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:id="@+id/buttonIMDB"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/list_selector_holo_dark"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center_vertical"
-                android:padding="@dimen/default_padding"
-                android:text="@string/imdb"
-                android:textSize="@dimen/text_size_medium" >
-            </TextView>
-
-            <TextView
-                android:id="@+id/buttonTrailer"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/list_selector_holo_dark"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center_vertical"
-                android:padding="@dimen/default_padding"
-                android:text="@string/trailer"
-                android:textSize="@dimen/text_size_medium" >
-            </TextView>
-
-            <TextView
-                android:id="@+id/buttonShouts"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/list_selector_holo_dark"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center_vertical"
-                android:padding="@dimen/default_padding"
-                android:text="@string/shouts"
-                android:textSize="@dimen/text_size_medium" >
-            </TextView>
-        </LinearLayout>
     </RelativeLayout>
+
+    <include
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/inline_padding"
+        layout="@layout/holodivider" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginLeft="@dimen/large_padding"
+        android:layout_marginRight="@dimen/large_padding"
+        android:baselineAligned="false"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/buttonIMDB"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/list_selector_holo_dark"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:padding="@dimen/default_padding"
+            android:text="@string/imdb"
+            android:textAllCaps="true"
+            android:textSize="@dimen/text_size_medium" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/buttonTrailer"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/list_selector_holo_dark"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:padding="@dimen/default_padding"
+            android:text="@string/trailer"
+            android:textAllCaps="true"
+            android:textSize="@dimen/text_size_medium" >
+        </TextView>
+    </LinearLayout>
 
 </LinearLayout>
