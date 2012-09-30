@@ -3,8 +3,6 @@
 
     <string name="app_name">SeriesGuide movies</string>
     <string name="description_poster">Movie poster</string>
-    <string name="trending">Trending</string>
-    <string name="watchlist">Watchlist</string>
     <string name="search_hint">Search movies</string>
     <string name="menu_update">Update</string>
     <string name="menu_login">trakt account</string>

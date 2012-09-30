@@ -17,9 +17,11 @@
 
 package com.uwetrottmann.movies.ui;
 
+import android.annotation.TargetApi;
+import android.app.ActivityOptions;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
@@ -93,20 +95,21 @@ public class MoviesFragment extends SherlockFragment implements LoaderCallbacks<
         mMultiPane = detailsFragment != null && detailsFragment.getVisibility() == View.VISIBLE;
     }
 
+    @TargetApi(16)
     @Override
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
         Movie movie = (Movie) parent.getItemAtPosition(position);
         if (movie != null && movie.id != null) {
-            MovieDetailsFragment newFragment = MovieDetailsFragment.newInstance(movie.id);
-
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            if (mMultiPane) {
-                ft.replace(R.id.fragment_details, newFragment);
+            // display details about this movie in a new activity
+            Intent i = new Intent(getActivity(), MovieDetailsActivity.class);
+            i.putExtra(MovieDetailsFragment.InitBundle.TMDBID, movie.id);
+            if (AndroidUtils.isJellyBeanOrHigher()) {
+                Bundle options = ActivityOptions.makeScaleUpAnimation(v, 0, 0, v.getWidth(),
+                        v.getHeight()).toBundle();
+                getActivity().startActivity(i, options);
             } else {
-                ft.replace(R.id.fragment_list, newFragment);
-                ft.addToBackStack(null);
+                startActivity(i);
             }
-            ft.commit();
         }
     }
 
