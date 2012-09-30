@@ -23,13 +23,6 @@
         <item name="android:dropDownSelector">@drawable/selectable_background_seriesguidemoviestheme</item>
     </style>
 
-    <style name="ScrollingLayout">
-        <item name="android:paddingBottom">@dimen/default_padding</item>
-        <item name="android:paddingLeft">@dimen/layout_padding</item>
-        <item name="android:paddingRight">@dimen/layout_padding</item>
-        <item name="android:paddingTop">@dimen/layout_padding</item>
-    </style>
-
     <style name="Label">
         <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:layout_marginLeft">@dimen/default_padding</item>

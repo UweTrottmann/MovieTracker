@@ -30,7 +30,6 @@
 
     <RelativeLayout
         android:id="@+id/content"
-        style="@style/ScrollingLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
