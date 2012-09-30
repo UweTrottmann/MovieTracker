@@ -17,14 +17,6 @@
 
 package com.uwetrottmann.movies.ui;
 
-import com.actionbarsherlock.app.SherlockDialogFragment;
-import com.uwetrottmann.androidutils.AndroidUtils;
-import com.uwetrottmann.movies.R;
-import com.uwetrottmann.movies.util.AnalyticsUtils;
-import com.uwetrottmann.movies.util.TraktCredentialsDialogFragment;
-import com.uwetrottmann.movies.util.TraktTask;
-import com.uwetrottmann.movies.util.Utils;
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -38,6 +30,13 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.actionbarsherlock.app.SherlockDialogFragment;
+import com.uwetrottmann.androidutils.AndroidUtils;
+import com.uwetrottmann.movies.R;
+import com.uwetrottmann.movies.util.TraktCredentialsDialogFragment;
+import com.uwetrottmann.movies.util.TraktTask;
+import com.uwetrottmann.movies.util.Utils;
 
 public class CheckInDialogFragment extends SherlockDialogFragment {
 
@@ -73,8 +72,6 @@ public class CheckInDialogFragment extends SherlockDialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        AnalyticsUtils.getInstance(getActivity()).trackPageView("/CheckInDialog");
     }
 
     @Override
