@@ -25,12 +25,15 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockListFragment;
+import com.actionbarsherlock.app.SherlockFragment;
 import com.uwetrottmann.androidutils.AndroidUtils;
 import com.uwetrottmann.movies.R;
 import com.uwetrottmann.movies.loaders.TmdbMoviesLoader;
@@ -39,13 +42,16 @@ import com.uwetrottmann.tmdb.entities.Movie;
 
 import java.util.List;
 
-public class MoviesFragment extends SherlockListFragment implements LoaderCallbacks<List<Movie>> {
+public class MoviesFragment extends SherlockFragment implements LoaderCallbacks<List<Movie>>,
+        OnItemClickListener {
 
     private static final int MOVIES_LOADER_ID = 0;
 
     private TmdbMoviesAdapter mAdapter;
 
     private boolean mMultiPane;
+
+    private GridView mGrid;
 
     public static MoviesFragment newInstance() {
         MoviesFragment f = new MoviesFragment();
@@ -54,23 +60,32 @@ public class MoviesFragment extends SherlockListFragment implements LoaderCallba
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (container == null) {
+            return null;
+        }
+        return inflater.inflate(R.layout.grid_fragment, container, false);
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         // set list adapter
         mAdapter = new TmdbMoviesAdapter(getActivity());
-        setListAdapter(mAdapter);
 
-        // style list view
-        final ListView list = getListView();
-        list.setDivider(getResources().getDrawable(R.drawable.divider_horizontal_holo_dark));
-        list.setSelector(R.drawable.list_selector_holo_dark);
-        list.setClipToPadding(AndroidUtils.isHoneycombOrHigher() ? false : true);
-        final float scale = getResources().getDisplayMetrics().density;
-        int layoutPadding = (int) (10 * scale + 0.5f);
-        int defaultPadding = (int) (8 * scale + 0.5f);
-        list.setPadding(layoutPadding, layoutPadding, layoutPadding, defaultPadding);
-        list.setFastScrollEnabled(true);
+        // basic setup of grid view
+        mGrid = (GridView) getView().findViewById(android.R.id.list);
+        mGrid.setOnItemClickListener(this);
+        View emptyView = getView().findViewById(android.R.id.empty);
+        if (emptyView != null) {
+            mGrid.setEmptyView(emptyView);
+        }
+
+        // restore an existing adapter
+        if (mAdapter != null) {
+            mGrid.setAdapter(mAdapter);
+        }
 
         onListLoad(true);
 
@@ -79,8 +94,8 @@ public class MoviesFragment extends SherlockListFragment implements LoaderCallba
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        Movie movie = (Movie) l.getItemAtPosition(position);
+    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+        Movie movie = (Movie) parent.getItemAtPosition(position);
         if (movie != null && movie.id != null) {
             MovieDetailsFragment newFragment = MovieDetailsFragment.newInstance(movie.id);
 
@@ -98,12 +113,9 @@ public class MoviesFragment extends SherlockListFragment implements LoaderCallba
     public void onListLoad(boolean isInitialLoad) {
         // nag about no connectivity
         if (!AndroidUtils.isNetworkConnected(getActivity())) {
-            setEmptyText(getString(R.string.offline));
-            setListShown(true);
+            Toast.makeText(getActivity(), getString(R.string.offline), Toast.LENGTH_LONG).show();
         } else {
             // nag about a trakt account if trying to display auth-only lists
-            setEmptyText(getString(R.string.movies_empty));
-            setListShown(false);
             if (isInitialLoad) {
                 getLoaderManager().initLoader(MOVIES_LOADER_ID, getArguments(), this);
             } else {
@@ -120,12 +132,6 @@ public class MoviesFragment extends SherlockListFragment implements LoaderCallba
     @Override
     public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> data) {
         mAdapter.setData(data);
-
-        if (isResumed()) {
-            setListShown(true);
-        } else {
-            setListShownNoAnimation(true);
-        }
     }
 
     @Override
@@ -137,7 +143,7 @@ public class MoviesFragment extends SherlockListFragment implements LoaderCallba
 
         private LayoutInflater mLayoutInflater;
 
-        private static final int LAYOUT = R.layout.movie_row;
+        private static final int LAYOUT = R.layout.movies_row;
 
         private ImageDownloader mImageDownloader;
 
@@ -157,7 +163,6 @@ public class MoviesFragment extends SherlockListFragment implements LoaderCallba
 
                 viewHolder = new ViewHolder();
                 viewHolder.title = (TextView) convertView.findViewById(R.id.title);
-                viewHolder.overview = (TextView) convertView.findViewById(R.id.description);
                 viewHolder.poster = (ImageView) convertView.findViewById(R.id.poster);
                 convertView.setTag(viewHolder);
             } else {
@@ -167,10 +172,9 @@ public class MoviesFragment extends SherlockListFragment implements LoaderCallba
             // set text properties immediately
             Movie item = getItem(position);
             viewHolder.title.setText(item.title);
-            viewHolder.overview.setText("");
             if (item.poster_path != null) {
                 // TODO get image path from TMDb, not static
-                String posterPath = "http://cf2.imgobject.com/t/p/w154" + item.poster_path;
+                String posterPath = "http://cf2.imgobject.com/t/p/w185" + item.poster_path;
                 mImageDownloader.download(posterPath, viewHolder.poster, false);
             }
 
@@ -189,8 +193,6 @@ public class MoviesFragment extends SherlockListFragment implements LoaderCallba
         static class ViewHolder {
 
             public TextView title;
-
-            public TextView overview;
 
             public ImageView poster;
         }

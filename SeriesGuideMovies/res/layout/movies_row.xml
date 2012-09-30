@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/add_layout_root"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/default_padding" >
+
+    <ImageView
+        android:id="@+id/poster"
+        android:layout_width="130dp"
+        android:layout_height="195dp"
+        android:contentDescription="@string/description_poster"
+        android:scaleType="centerCrop"
+        android:src="@drawable/show_generic" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/fade_black"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:padding="@dimen/default_padding"
+        android:text="@string/app_name"
+        android:textAppearance="@style/TextAppearance.Medium.Light" />
+
+</FrameLayout>

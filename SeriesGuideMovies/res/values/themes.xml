@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="SeriesGuideTheme" parent="Theme.Sherlock.ForceOverflow">
+        <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
+        <item name="actionBarItemBackground">@drawable/selectable_background_seriesguidemoviestheme</item>
+        <item name="dropDownListViewStyle">@style/seriesguidemoviestheme_DropDownListView</item>
+        <item name="actionBarTabStyle">@style/seriesguidemoviestheme_ActionBarTabStyle</item>
+        <item name="actionDropDownStyle">@style/seriesguidemoviestheme_DropDownNav</item>
+        <item name="actionBarStyle">@style/seriesguidemoviestheme_ActionBar</item>
+        <item name="android:selectableItemBackground">@drawable/selectable_background_seriesguidemoviestheme</item>
+        <item name="android:dropDownListViewStyle">@style/seriesguidemoviestheme_DropDownListView</item>
+        <item name="android:actionBarTabStyle">@style/seriesguidemoviestheme_ActionBarTabStyle</item>
+        <item name="android:actionDropDownStyle">@style/seriesguidemoviestheme_DropDownNav</item>
+        <item name="android:actionBarStyle">@style/seriesguidemoviestheme_ActionBar</item>
+    </style>
+
+</resources>

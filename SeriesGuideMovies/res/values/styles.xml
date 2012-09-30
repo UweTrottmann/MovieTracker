@@ -1,20 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="SeriesGuideTheme" parent="Theme.Sherlock.ForceOverflow">
-        <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
-        <item name="actionBarItemBackground">@drawable/selectable_background_seriesguidemoviestheme</item>
-        <item name="dropDownListViewStyle">@style/seriesguidemoviestheme_DropDownListView</item>
-        <item name="actionBarTabStyle">@style/seriesguidemoviestheme_ActionBarTabStyle</item>
-        <item name="actionDropDownStyle">@style/seriesguidemoviestheme_DropDownNav</item>
-        <item name="actionBarStyle">@style/seriesguidemoviestheme_ActionBar</item>
-        <item name="android:selectableItemBackground">@drawable/selectable_background_seriesguidemoviestheme</item>
-        <item name="android:dropDownListViewStyle">@style/seriesguidemoviestheme_DropDownListView</item>
-        <item name="android:actionBarTabStyle">@style/seriesguidemoviestheme_ActionBarTabStyle</item>
-        <item name="android:actionDropDownStyle">@style/seriesguidemoviestheme_DropDownNav</item>
-        <item name="android:actionBarStyle">@style/seriesguidemoviestheme_ActionBar</item>
-    </style>
-
     <style name="seriesguidemoviestheme_ActionBar" parent="@style/Widget.Sherlock.ActionBar">
         <item name="background">@drawable/sgm_actionbar_background</item>
         <item name="backgroundSplit">@drawable/ab_bottom_solid_seriesguidemoviestheme</item>
@@ -51,6 +37,61 @@
         <item name="android:layout_marginTop">@dimen/inline_padding</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Text styles -->
+    <style name="TextAppearance">
+        <item name="android:textColor">@color/text_default</item>
+        <item name="android:textSize">@dimen/text_size_xmedium</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColorLink">@color/text_link</item>
+    </style>
+
+    <style name="TextAppearance.XSmall">
+        <item name="android:textSize">@dimen/text_size_xsmall</item>
+    </style>
+
+    <style name="TextAppearance.XSmall.Dim">
+        <item name="android:textColor">@color/text_dim</item>
+    </style>
+
+    <style name="TextAppearance.Small">
+        <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
+
+    <style name="TextAppearance.Small.Dim">
+        <item name="android:textColor">@color/text_dim</item>
+    </style>
+
+    <style name="TextAppearance.Small.Primary">
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <style name="TextAppearance.Medium">
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+    </style>
+
+    <style name="TextAppearance.Medium.Light">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="TextAppearance.Large">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
+    <style name="TextAppearance.Large.Light">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="TextAppearance.XLarge">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">@dimen/text_size_xlarge</item>
+    </style>
+
+    <style name="TextAppearance.XLarge.Light">
+        <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
 </resources>
