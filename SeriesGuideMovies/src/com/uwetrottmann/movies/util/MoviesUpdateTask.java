@@ -153,7 +153,8 @@ public class MoviesUpdateTask extends AsyncTask<Void, Void, Integer> {
 
         switch (result) {
             case SUCCESS:
-                Toast.makeText(getContext(), TAG, R.string.update_success).show();
+                Toast.makeText(getContext(), getContext().getString(R.string.update_success),
+                        Toast.LENGTH_SHORT).show();
                 break;
         }
     }

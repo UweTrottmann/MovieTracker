@@ -281,7 +281,7 @@ public class MoviesProvider extends ContentProvider {
 
                 + Movies.INWATCHLIST + " INTEGER,"
 
-                + Movies.INCOLLECTION + " INTEGER"
+                + Movies.INCOLLECTION + " INTEGER,"
 
                 + "UNIQUE (" + Movies.TMDBID + ") ON CONFLICT REPLACE"
 
