@@ -32,6 +32,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.uwetrottmann.androidutils.AndroidUtils;
 import com.uwetrottmann.movies.R;
+import com.uwetrottmann.movies.ui.MoviesFragment.TmdbCategory;
 import com.uwetrottmann.movies.util.TraktCredentialsDialogFragment;
 import com.uwetrottmann.movies.util.TraktMoviesLoader.TraktCategory;
 
@@ -83,10 +84,22 @@ public class MoviesActivity extends SherlockFragmentActivity implements
         switch (itemPosition) {
             case 0:
             default:
-                // now playing (TMDb)
-                newFragment = MoviesFragment.newInstance();
+                // popular (TMDb)
+                newFragment = MoviesFragment.newInstance(TmdbCategory.POPULAR);
                 break;
             case 1:
+                // top rated (TMDb)
+                newFragment = MoviesFragment.newInstance(TmdbCategory.TOPRATED);
+                break;
+            case 2:
+                // now playing (TMDb)
+                newFragment = MoviesFragment.newInstance(TmdbCategory.NOWPLAYING);
+                break;
+            case 3:
+                // upcoming (TMDb)
+                newFragment = MoviesFragment.newInstance(TmdbCategory.UPCOMING);
+                break;
+            case 4:
                 // watchlist (trakt)
                 newFragment = LocalMoviesFragment.newInstance(TraktCategory.WATCHLIST);
                 break;

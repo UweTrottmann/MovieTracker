@@ -21,7 +21,10 @@
     <string name="please_setup_trakt">Setup a trakt account to display this list.</string>
 
     <string-array name="movie_lists">
+        <item>Popular</item>
+        <item>Top Rated</item>
         <item>Now playing</item>
+        <item>Upcoming</item>
         <item>Watchlist</item>
     </string-array>
 

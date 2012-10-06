@@ -23,6 +23,7 @@ import android.util.Log;
 
 import com.jakewharton.apibuilder.ApiException;
 import com.jakewharton.trakt.TraktException;
+import com.uwetrottmann.movies.ui.MoviesFragment.TmdbCategory;
 import com.uwetrottmann.movies.util.Utils;
 import com.uwetrottmann.tmdb.ServiceManager;
 import com.uwetrottmann.tmdb.entities.Movie;
@@ -39,8 +40,11 @@ public class TmdbMoviesLoader extends AsyncTaskLoader<List<Movie>> {
 
     private List<Movie> mData;
 
-    public TmdbMoviesLoader(Context context) {
+    private TmdbCategory mCategory;
+
+    public TmdbMoviesLoader(Context context, TmdbCategory category) {
         super(context);
+        mCategory = category;
     }
 
     @Override
@@ -48,7 +52,22 @@ public class TmdbMoviesLoader extends AsyncTaskLoader<List<Movie>> {
         ServiceManager manager = Utils.getTmdbServiceManager(getContext());
 
         try {
-            ResultsPage page = manager.moviesService().nowPlaying().fire();
+            ResultsPage page;
+            switch (mCategory) {
+                default:
+                case NOWPLAYING:
+                    page = manager.moviesService().nowPlaying().fire();
+                    break;
+                case POPULAR:
+                    page = manager.moviesService().popular().fire();
+                    break;
+                case TOPRATED:
+                    page = manager.moviesService().topRated().fire();
+                    break;
+                case UPCOMING:
+                    page = manager.moviesService().upcoming().fire();
+                    break;
+            }
             if (page != null && page.results != null) {
                 return page.results;
             }

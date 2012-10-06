@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,10 +54,44 @@ public class MoviesFragment extends SherlockFragment implements LoaderCallbacks<
 
     private GridView mGrid;
 
-    public static MoviesFragment newInstance() {
+    public static MoviesFragment newInstance(TmdbCategory category) {
         MoviesFragment f = new MoviesFragment();
 
+        Bundle args = new Bundle();
+        args.putInt(InitBundle.TMDB_CATEGORY, category.index);
+        f.setArguments(args);
+
         return f;
+    }
+
+    public interface InitBundle {
+        String TMDB_CATEGORY = "tmdbcategory";
+    }
+
+    public enum TmdbCategory {
+        NOWPLAYING(0), TOPRATED(1), UPCOMING(2), POPULAR(3);
+
+        private final int index;
+
+        private TmdbCategory(int index) {
+            this.index = index;
+        }
+
+        public int index() {
+            return index;
+        }
+
+        private static final SparseArray<TmdbCategory> INT_MAPPING = new SparseArray<TmdbCategory>();
+
+        static {
+            for (TmdbCategory via : TmdbCategory.values()) {
+                INT_MAPPING.put(via.index(), via);
+            }
+        }
+
+        public static TmdbCategory fromValue(int value) {
+            return INT_MAPPING.get(value);
+        }
     }
 
     @Override
@@ -124,7 +159,8 @@ public class MoviesFragment extends SherlockFragment implements LoaderCallbacks<
 
     @Override
     public Loader<List<Movie>> onCreateLoader(int id, Bundle args) {
-        return new TmdbMoviesLoader(getSherlockActivity());
+        return new TmdbMoviesLoader(getSherlockActivity(), TmdbCategory.fromValue(args
+                .getInt(InitBundle.TMDB_CATEGORY)));
     }
 
     @Override
