@@ -17,7 +17,10 @@
 
 package com.uwetrottmann.movies.ui;
 
+import android.annotation.TargetApi;
+import android.app.ActivityOptions;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -79,7 +82,6 @@ public class LocalMoviesFragment extends SherlockListFragment implements LoaderC
         // style list view
         final ListView list = getListView();
         list.setDivider(getResources().getDrawable(R.drawable.divider_horizontal_holo_dark));
-        list.setSelector(R.drawable.list_selector_holo_dark);
         list.setClipToPadding(AndroidUtils.isHoneycombOrHigher() ? false : true);
         final float scale = getResources().getDisplayMetrics().density;
         int layoutPadding = (int) (10 * scale + 0.5f);
@@ -107,24 +109,25 @@ public class LocalMoviesFragment extends SherlockListFragment implements LoaderC
         return super.onOptionsItemSelected(item);
     }
 
+    @TargetApi(16)
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        // TODO add tmdbId and use that...
-        // Cursor movie = (Cursor) l.getItemAtPosition(position);
-        // if (movie != null && movie.getString(MoviesQuery.IMDBID) != null) {
-        // final String imdbId = movie.getString(MoviesQuery.IMDBID);
-        // MovieDetailsFragment newFragment =
-        // MovieDetailsFragment.newInstance(imdbId);
-        //
-        // FragmentTransaction ft = getFragmentManager().beginTransaction();
-        // if (mMultiPane) {
-        // ft.replace(R.id.fragment_details, newFragment);
-        // } else {
-        // ft.replace(R.id.fragment_list, newFragment);
-        // ft.addToBackStack(null);
-        // }
-        // ft.commit();
-        // }
+        Cursor movie = (Cursor) l.getItemAtPosition(position);
+        if (movie != null) {
+            final int tmdbId = movie.getInt(MoviesQuery.TMDBID);
+            if (tmdbId != 0) {
+                // display details about this movie in a new activity
+                Intent i = new Intent(getActivity(), MovieDetailsActivity.class);
+                i.putExtra(MovieDetailsFragment.InitBundle.TMDBID, tmdbId);
+                if (AndroidUtils.isJellyBeanOrHigher()) {
+                    Bundle options = ActivityOptions.makeScaleUpAnimation(v, 0, 0, v.getWidth(),
+                            v.getHeight()).toBundle();
+                    getActivity().startActivity(i, options);
+                } else {
+                    startActivity(i);
+                }
+            }
+        }
     }
 
     public void onListLoad(boolean isInitialLoad) {
@@ -237,7 +240,7 @@ public class LocalMoviesFragment extends SherlockListFragment implements LoaderC
     interface MoviesQuery {
 
         String[] PROJECTION = new String[] {
-                Movies._ID, Movies.TITLE, Movies.OVERVIEW, Movies.POSTER, Movies.IMDBID
+                Movies._ID, Movies.TITLE, Movies.OVERVIEW, Movies.POSTER, Movies.TMDBID
         };
 
         String SORTORDER = Movies.TITLE + " ASC";
@@ -250,7 +253,7 @@ public class LocalMoviesFragment extends SherlockListFragment implements LoaderC
 
         int POSTER = 3;
 
-        int IMDBID = 4;
+        int TMDBID = 4;
 
     }
 
