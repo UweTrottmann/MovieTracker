@@ -61,6 +61,9 @@
     <string name="waitplease">A moment, please…</string>
     <string name="trakt_generalerror">Something went wrong. Please check your credentials and try again.</string>
 
+    <!-- Updating -->
+    <string name="update_success">Watchlist updated.</string>
+
     <!-- DO NOT TRANSLATE -->
     <string name="notraktrating">--%</string>
 

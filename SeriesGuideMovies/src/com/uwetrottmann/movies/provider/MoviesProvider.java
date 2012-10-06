@@ -17,9 +17,6 @@
 
 package com.uwetrottmann.movies.provider;
 
-import com.uwetrottmann.movies.provider.MoviesContract.Movies;
-import com.uwetrottmann.movies.util.SelectionBuilder;
-
 import android.content.ContentProvider;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
@@ -32,6 +29,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.util.Log;
+
+import com.uwetrottmann.movies.provider.MoviesContract.Movies;
+import com.uwetrottmann.movies.util.SelectionBuilder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -243,7 +243,7 @@ public class MoviesProvider extends ContentProvider {
         public static final int DATABASE_VERSION = DBVER_ORIGINAL;
 
         private static final String CREATE_MOVIES_TABLE = "CREATE TABLE " + Tables.MOVIES + " ("
-                + Movies._ID + " INTEGER PRIMARY KEY,"
+                + Movies._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
 
                 + Movies.TITLE + " TEXT NOT NULL,"
 
@@ -265,7 +265,7 @@ public class MoviesProvider extends ContentProvider {
 
                 + Movies.IMDBID + " TEXT,"
 
-                + Movies.LASTUPDATED + " INTEGER,"
+                + Movies.TMDBID + " TEXT NOT NULL,"
 
                 + Movies.POSTER + " TEXT,"
 
@@ -282,6 +282,8 @@ public class MoviesProvider extends ContentProvider {
                 + Movies.INWATCHLIST + " INTEGER,"
 
                 + Movies.INCOLLECTION + " INTEGER"
+
+                + "UNIQUE (" + Movies.TMDBID + ") ON CONFLICT REPLACE"
 
                 + ");";
 

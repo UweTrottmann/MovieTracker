@@ -48,8 +48,8 @@ public class MoviesContract {
         String CERTIFICATION = "movie_certification";
 
         String IMDBID = "movie_imdbid";
-
-        String LASTUPDATED = "movie_lastupdate";
+        
+        String TMDBID = "movie_tmdbid";
 
         String POSTER = "movie_poster";
 

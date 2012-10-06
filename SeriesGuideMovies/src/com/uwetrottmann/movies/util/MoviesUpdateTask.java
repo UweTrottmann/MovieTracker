@@ -17,13 +17,6 @@
 
 package com.uwetrottmann.movies.util;
 
-import com.jakewharton.apibuilder.ApiException;
-import com.jakewharton.trakt.ServiceManager;
-import com.jakewharton.trakt.TraktException;
-import com.jakewharton.trakt.entities.Movie;
-import com.uwetrottmann.movies.provider.MoviesContract;
-import com.uwetrottmann.movies.provider.MoviesContract.Movies;
-
 import android.content.ContentProviderOperation;
 import android.content.ContentValues;
 import android.content.Context;
@@ -32,11 +25,18 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.RemoteException;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.jakewharton.apibuilder.ApiException;
+import com.jakewharton.trakt.ServiceManager;
+import com.jakewharton.trakt.TraktException;
+import com.jakewharton.trakt.entities.Movie;
+import com.uwetrottmann.movies.R;
+import com.uwetrottmann.movies.provider.MoviesContract;
+import com.uwetrottmann.movies.provider.MoviesContract.Movies;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
 
 public class MoviesUpdateTask extends AsyncTask<Void, Void, Integer> {
 
@@ -57,8 +57,8 @@ public class MoviesUpdateTask extends AsyncTask<Void, Void, Integer> {
         List<Movie> newWatchlist;
         try {
 
-            // if possible get auth data so we can return additional
-            // information (seen, checkins, etc.)
+            // get auth data so we can return additional information (is
+            // collected, ratings)
             ServiceManager serviceManager;
             if (Utils.isTraktCredentialsValid(getContext())) {
                 serviceManager = Utils.getServiceManagerWithAuth(getContext(), false);
@@ -66,8 +66,6 @@ public class MoviesUpdateTask extends AsyncTask<Void, Void, Integer> {
                 return INVALID_CREDENTIALS;
             }
 
-            // there will always be a username as the fragment using
-            // this only loads with valid credentials
             newWatchlist = serviceManager.userService()
                     .watchlistMovies(Utils.getTraktUsername(getContext())).fire();
 
@@ -83,15 +81,17 @@ public class MoviesUpdateTask extends AsyncTask<Void, Void, Integer> {
         }
 
         // build a list of movies already in the database
-        final Cursor oldWatchlist = getContext().getContentResolver().query(Movies.CONTENT_URI,
+        final Cursor oldWatchlistData = getContext().getContentResolver().query(Movies.CONTENT_URI,
                 new String[] {
-                        Movies.IMDBID, Movies.LASTUPDATED
+                    Movies.TMDBID
                 }, null, null, null);
-        HashMap<String, Long> oldWatchlistIds = Maps.newHashMap();
-        while (oldWatchlist.moveToNext()) {
-            oldWatchlistIds.put(oldWatchlist.getString(0), oldWatchlist.getLong(1));
+        ArrayList<String> oldWatchlist = Lists.newArrayList();
+        if (oldWatchlistData != null) {
+            while (oldWatchlistData.moveToNext()) {
+                oldWatchlist.add(oldWatchlistData.getString(0));
+            }
+            oldWatchlistData.close();
         }
-        oldWatchlist.close();
 
         // build db ops to update or add movies
         ArrayList<ContentProviderOperation> batch = new ArrayList<ContentProviderOperation>();
@@ -100,19 +100,14 @@ public class MoviesUpdateTask extends AsyncTask<Void, Void, Integer> {
             onBuildMovieValues(movie, values);
 
             ContentProviderOperation op = null;
-            Long movieLastUpdated = oldWatchlistIds.remove(movie.imdbId);
-            if (movieLastUpdated != null) {
-                // update (only if there are changes
-                // TODO ask whether lastupdated will be included in watchlist
-                // call again
-                // if (movieLastUpdated < movie.lastUpdated.getTime()) {
+            if (oldWatchlist.remove(movie.tmdbId)) {
+                // update existing movie
                 op = ContentProviderOperation.newUpdate(Movies.CONTENT_URI)
-                        .withSelection(Movies.IMDBID + "=?", new String[] {
-                            movie.imdbId
+                        .withSelection(Movies.TMDBID + "=?", new String[] {
+                                movie.tmdbId
                         }).withValues(values).build();
-                // }
             } else {
-                // insert
+                // insert new movie
                 op = ContentProviderOperation.newInsert(Movies.CONTENT_URI).withValues(values)
                         .build();
             }
@@ -123,10 +118,10 @@ public class MoviesUpdateTask extends AsyncTask<Void, Void, Integer> {
         }
 
         // build db ops to remove movies that got deleted from the watchlist
-        for (Entry<String, Long> movie : oldWatchlistIds.entrySet()) {
+        for (String tmdbId : oldWatchlist) {
             ContentProviderOperation op = ContentProviderOperation.newDelete(Movies.CONTENT_URI)
-                    .withSelection(Movies.IMDBID + "=?", new String[] {
-                        movie.getKey()
+                    .withSelection(Movies.TMDBID + "=?", new String[] {
+                            tmdbId
                     }).build();
             batch.add(op);
         }
@@ -155,10 +150,15 @@ public class MoviesUpdateTask extends AsyncTask<Void, Void, Integer> {
     @Override
     protected void onPostExecute(Integer result) {
         onFinishUp();
+
+        switch (result) {
+            case SUCCESS:
+                Toast.makeText(getContext(), TAG, R.string.update_success).show();
+                break;
+        }
     }
 
     private void onBuildMovieValues(Movie movie, ContentValues values) {
-        // TODO support missing values
         values.put(Movies.TITLE, movie.title);
         values.put(Movies.YEAR, movie.year);
         values.put(Movies.RELEASED, movie.released.getTime());
@@ -169,12 +169,10 @@ public class MoviesUpdateTask extends AsyncTask<Void, Void, Integer> {
         values.put(Movies.OVERVIEW, movie.overview);
         values.put(Movies.CERTIFICATION, movie.certification);
         values.put(Movies.IMDBID, movie.imdbId);
-        if (movie.lastUpdated != null) {
-            values.put(Movies.LASTUPDATED, movie.lastUpdated.getTime());
-        }
+        values.put(Movies.TMDBID, movie.tmdbId);
         values.put(Movies.POSTER, movie.images.poster);
         values.put(Movies.FANART, movie.images.fanart);
-        // values.put(Movies.GENRES, movie.);
+        // TODO Movies.GENRES
         values.put(Movies.RATINGS_PERCENTAGE, movie.ratings.percentage);
         values.put(Movies.RATINGS_VOTES, movie.ratings.votes);
         values.put(Movies.WATCHED, movie.watched);
