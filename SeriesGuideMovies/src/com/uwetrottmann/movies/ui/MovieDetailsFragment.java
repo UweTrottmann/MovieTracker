@@ -44,6 +44,9 @@ import com.uwetrottmann.movies.R;
 import com.uwetrottmann.movies.entities.MovieDetails;
 import com.uwetrottmann.movies.loaders.TmdbMovieLoader;
 import com.uwetrottmann.movies.util.ImageDownloader;
+import com.uwetrottmann.tmdb.entities.Casts;
+import com.uwetrottmann.tmdb.entities.Casts.CastMember;
+import com.uwetrottmann.tmdb.entities.Casts.CrewMember;
 import com.uwetrottmann.tmdb.entities.Movie;
 import com.uwetrottmann.tmdb.entities.Trailers;
 
@@ -145,6 +148,7 @@ public class MovieDetailsFragment extends SherlockListFragment implements
             final MovieDetails item = getItem(position);
             final Movie movie = item.movie;
             final Trailers trailers = item.trailers;
+            final Casts cast = item.casts;
 
             ((TextView) view.findViewById(R.id.title)).setText(movie.title);
             ((TextView) view.findViewById(R.id.description)).setText(movie.overview);
@@ -156,6 +160,31 @@ public class MovieDetailsFragment extends SherlockListFragment implements
                     getContext(), movie.release_date.getTime(), DateUtils.FORMAT_SHOW_DATE));
             ((TextView) view.findViewById(R.id.runtime)).setText(getContext().getString(
                     R.string.timeunit, movie.runtime));
+
+            if (cast != null) {
+                // cast
+                StringBuilder actors = new StringBuilder();
+                for (CastMember castMember : cast.cast) {
+                    if (actors.length() > 0) {
+                        actors.append("\n");
+                    }
+                    actors.append(castMember.name).append(" ");
+                    actors.append(getContext().getString(R.string.cast_as)).append(" ");
+                    actors.append(castMember.character);
+                }
+                ((TextView) view.findViewById(R.id.actors)).setText(actors);
+
+                // crew
+                StringBuilder crew = new StringBuilder();
+                for (CrewMember crewMember : cast.crew) {
+                    if (crew.length() > 0) {
+                        crew.append("\n");
+                    }
+                    crew.append(crewMember.name).append(" (");
+                    crew.append(crewMember.job).append(")");
+                }
+                ((TextView) view.findViewById(R.id.crew)).setText(crew);
+            }
 
             view.findViewById(R.id.checkinButton).setOnClickListener(new OnClickListener() {
                 @Override

@@ -46,6 +46,7 @@ public class TmdbMovieLoader extends GenericAsyncTaskLoader<MovieDetails> {
         try {
             details.movie = manager.moviesService().summary(mTmdbId).fire();
             details.trailers = manager.moviesService().trailers(mTmdbId).fire();
+            details.casts = manager.moviesService().casts(mTmdbId).fire();
             return details;
         } catch (TraktException e) {
             Log.w(TAG, e);

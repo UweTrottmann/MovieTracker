@@ -1,6 +1,7 @@
 
 package com.uwetrottmann.movies.entities;
 
+import com.uwetrottmann.tmdb.entities.Casts;
 import com.uwetrottmann.tmdb.entities.Movie;
 import com.uwetrottmann.tmdb.entities.Trailers;
 
@@ -11,5 +12,6 @@ public class MovieDetails {
 
     public Movie movie;
     public Trailers trailers;
+    public Casts casts;
 
 }

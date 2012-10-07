@@ -34,7 +34,8 @@
     <string name="runtime">Runtime</string>
     <string name="timeunit">%s min</string>
     <string name="votes">%s votes</string>
-    <string name="actors">Actors</string>
+    <string name="actors">Cast</string>
+    <string name="cast_as">as</string>
     <string name="crew">Crew</string>
     <string name="addtocalendar">Add to calendar</string>
     <string name="shouts">Shouts</string>
