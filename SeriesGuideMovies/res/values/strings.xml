@@ -66,6 +66,7 @@
 
     <!-- Updating -->
     <string name="update_success">Watchlist updated.</string>
+    <string name="update_failure">Update failed, try again later.</string>
 
     <!-- DO NOT TRANSLATE -->
     <string name="notraktrating">--%</string>

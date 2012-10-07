@@ -149,14 +149,18 @@ public class MoviesUpdateTask extends AsyncTask<Void, Void, Integer> {
 
     @Override
     protected void onPostExecute(Integer result) {
-        onFinishUp();
-
         switch (result) {
             case SUCCESS:
                 Toast.makeText(getContext(), getContext().getString(R.string.update_success),
                         Toast.LENGTH_SHORT).show();
                 break;
+            default:
+                Toast.makeText(getContext(), getContext().getString(R.string.update_failure),
+                        Toast.LENGTH_LONG).show();
+                break;
         }
+
+        onFinishUp();
     }
 
     private void onBuildMovieValues(Movie movie, ContentValues values) {
