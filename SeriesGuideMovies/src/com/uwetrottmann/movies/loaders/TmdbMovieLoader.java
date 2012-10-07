@@ -22,14 +22,14 @@ import android.util.Log;
 
 import com.jakewharton.apibuilder.ApiException;
 import com.jakewharton.trakt.TraktException;
+import com.uwetrottmann.movies.entities.MovieDetails;
 import com.uwetrottmann.movies.util.Utils;
 import com.uwetrottmann.tmdb.ServiceManager;
-import com.uwetrottmann.tmdb.entities.Movie;
 
 /**
  * Loads details for a movie from TMDb.
  */
-public class TmdbMovieLoader extends GenericAsyncTaskLoader<Movie> {
+public class TmdbMovieLoader extends GenericAsyncTaskLoader<MovieDetails> {
 
     private static final String TAG = "TmdbMoviesLoader";
     private int mTmdbId;
@@ -40,10 +40,13 @@ public class TmdbMovieLoader extends GenericAsyncTaskLoader<Movie> {
     }
 
     @Override
-    public Movie loadInBackground() {
+    public MovieDetails loadInBackground() {
         ServiceManager manager = Utils.getTmdbServiceManager(getContext());
+        MovieDetails details = new MovieDetails();
         try {
-            return manager.moviesService().summary(mTmdbId).fire();
+            details.movie = manager.moviesService().summary(mTmdbId).fire();
+            details.trailers = manager.moviesService().trailers(mTmdbId).fire();
+            return details;
         } catch (TraktException e) {
             Log.w(TAG, e);
         } catch (ApiException e) {

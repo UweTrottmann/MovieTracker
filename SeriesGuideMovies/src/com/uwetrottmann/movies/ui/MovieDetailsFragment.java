@@ -23,7 +23,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
@@ -41,12 +41,14 @@ import com.actionbarsherlock.app.SherlockListFragment;
 import com.uwetrottmann.androidutils.AndroidUtils;
 import com.uwetrottmann.movies.Constants;
 import com.uwetrottmann.movies.R;
+import com.uwetrottmann.movies.entities.MovieDetails;
 import com.uwetrottmann.movies.loaders.TmdbMovieLoader;
 import com.uwetrottmann.movies.util.ImageDownloader;
 import com.uwetrottmann.tmdb.entities.Movie;
+import com.uwetrottmann.tmdb.entities.Trailers;
 
 public class MovieDetailsFragment extends SherlockListFragment implements
-        LoaderCallbacks<Movie> {
+        LoaderManager.LoaderCallbacks<MovieDetails> {
 
     public static MovieDetailsFragment newInstance(int tmdbId) {
         MovieDetailsFragment f = new MovieDetailsFragment();
@@ -92,12 +94,12 @@ public class MovieDetailsFragment extends SherlockListFragment implements
     }
 
     @Override
-    public Loader<Movie> onCreateLoader(int id, Bundle args) {
+    public Loader<MovieDetails> onCreateLoader(int id, Bundle args) {
         return new TmdbMovieLoader(getSherlockActivity(), args.getInt(InitBundle.TMDBID));
     }
 
     @Override
-    public void onLoadFinished(Loader<Movie> loader, Movie data) {
+    public void onLoadFinished(Loader<MovieDetails> loader, MovieDetails data) {
         mAdapter.setData(data);
 
         if (isResumed()) {
@@ -108,11 +110,11 @@ public class MovieDetailsFragment extends SherlockListFragment implements
     }
 
     @Override
-    public void onLoaderReset(Loader<Movie> loader) {
+    public void onLoaderReset(Loader<MovieDetails> loader) {
         mAdapter.setData(null);
     }
 
-    private static class MovieSummaryAdapter extends ArrayAdapter<Movie> {
+    private static class MovieSummaryAdapter extends ArrayAdapter<MovieDetails> {
 
         private LayoutInflater mLayoutInflater;
 
@@ -140,41 +142,43 @@ public class MovieDetailsFragment extends SherlockListFragment implements
                 view = convertView;
             }
 
-            final Movie item = getItem(position);
+            final MovieDetails item = getItem(position);
+            final Movie movie = item.movie;
+            final Trailers trailers = item.trailers;
 
-            ((TextView) view.findViewById(R.id.title)).setText(item.title);
-            ((TextView) view.findViewById(R.id.description)).setText(item.overview);
+            ((TextView) view.findViewById(R.id.title)).setText(movie.title);
+            ((TextView) view.findViewById(R.id.description)).setText(movie.overview);
             ((RatingBar) view.findViewById(R.id.ratingBar))
-                    .setRating((float) (double) item.vote_average);
+                    .setRating((float) (double) movie.vote_average);
             ((TextView) view.findViewById(R.id.votes)).setText(getContext().getString(
-                    R.string.votes, item.vote_count));
+                    R.string.votes, movie.vote_count));
             ((TextView) view.findViewById(R.id.releaseDate)).setText(DateUtils.formatDateTime(
-                    getContext(), item.release_date.getTime(), DateUtils.FORMAT_SHOW_DATE));
+                    getContext(), movie.release_date.getTime(), DateUtils.FORMAT_SHOW_DATE));
             ((TextView) view.findViewById(R.id.runtime)).setText(getContext().getString(
-                    R.string.timeunit, item.runtime));
+                    R.string.timeunit, movie.runtime));
 
             view.findViewById(R.id.checkinButton).setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    CheckInDialogFragment dialog = CheckInDialogFragment.newInstance(item.imdb_id,
-                            item.title);
+                    CheckInDialogFragment dialog = CheckInDialogFragment.newInstance(movie.imdb_id,
+                            movie.title);
                     dialog.show(mFm, "checkin-dialog");
                 }
             });
 
             // IMDb button
             View buttonImdb = view.findViewById(R.id.buttonIMDB);
-            if (!TextUtils.isEmpty(item.imdb_id)) {
+            if (!TextUtils.isEmpty(movie.imdb_id)) {
                 buttonImdb.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("imdb:///title/"
-                                + item.imdb_id + "/"));
+                                + movie.imdb_id + "/"));
                         try {
                             getContext().startActivity(myIntent);
                         } catch (ActivityNotFoundException e) {
                             myIntent = new Intent(Intent.ACTION_VIEW, Uri
-                                    .parse(Constants.IMDB_TITLE_URL + item.imdb_id));
+                                    .parse(Constants.IMDB_TITLE_URL + movie.imdb_id));
                             getContext().startActivity(myIntent);
                         }
                     }
@@ -183,16 +187,35 @@ public class MovieDetailsFragment extends SherlockListFragment implements
                 buttonImdb.setVisibility(View.GONE);
             }
 
+            // Trailer button
+            // TODO use new YouTube API to display inline
+            View buttonTrailer = view.findViewById(R.id.buttonTrailer);
+            if (trailers != null) {
+                if (trailers.youtube.size() > 0) {
+                    buttonTrailer.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent myIntent = new Intent(Intent.ACTION_VIEW,
+                                    Uri.parse("http://www.youtube.com/watch?v="
+                                            + trailers.youtube.get(0).source));
+                            getContext().startActivity(myIntent);
+                        }
+                    });
+                }
+            } else {
+                buttonTrailer.setVisibility(View.GONE);
+            }
+
             ImageView imageView = (ImageView) view.findViewById(R.id.fanart);
-            if (!TextUtils.isEmpty(item.backdrop_path)) {
-                String url = "http://cf2.imgobject.com/t/p/w780" + item.backdrop_path;
+            if (!TextUtils.isEmpty(movie.backdrop_path)) {
+                String url = "http://cf2.imgobject.com/t/p/w780" + movie.backdrop_path;
                 mImageDownloader.download(url, imageView, false);
             }
 
             return view;
         }
 
-        public void setData(Movie movie) {
+        public void setData(MovieDetails movie) {
             clear();
             if (movie != null) {
                 add(movie);
