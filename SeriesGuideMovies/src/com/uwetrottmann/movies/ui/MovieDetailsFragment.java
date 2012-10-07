@@ -145,7 +145,7 @@ public class MovieDetailsFragment extends SherlockListFragment implements
             ((TextView) view.findViewById(R.id.title)).setText(item.title);
             ((TextView) view.findViewById(R.id.description)).setText(item.overview);
             ((RatingBar) view.findViewById(R.id.ratingBar))
-                    .setRating((float) (item.vote_average / 0.1));
+                    .setRating((float) (double) item.vote_average);
             ((TextView) view.findViewById(R.id.votes)).setText(getContext().getString(
                     R.string.votes, item.vote_count));
             ((TextView) view.findViewById(R.id.releaseDate)).setText(DateUtils.formatDateTime(
