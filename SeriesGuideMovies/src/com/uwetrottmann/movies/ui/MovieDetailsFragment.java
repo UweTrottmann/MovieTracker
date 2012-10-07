@@ -26,6 +26,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.text.TextUtils;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,6 +34,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockListFragment;
@@ -142,6 +144,14 @@ public class MovieDetailsFragment extends SherlockListFragment implements
 
             ((TextView) view.findViewById(R.id.title)).setText(item.title);
             ((TextView) view.findViewById(R.id.description)).setText(item.overview);
+            ((RatingBar) view.findViewById(R.id.ratingBar))
+                    .setRating((float) (item.vote_average / 0.1));
+            ((TextView) view.findViewById(R.id.votes)).setText(getContext().getString(
+                    R.string.votes, item.vote_count));
+            ((TextView) view.findViewById(R.id.releaseDate)).setText(DateUtils.formatDateTime(
+                    getContext(), item.release_date.getTime(), DateUtils.FORMAT_SHOW_DATE));
+            ((TextView) view.findViewById(R.id.runtime)).setText(getContext().getString(
+                    R.string.timeunit, item.runtime));
 
             view.findViewById(R.id.checkinButton).setOnClickListener(new OnClickListener() {
                 @Override
@@ -172,21 +182,6 @@ public class MovieDetailsFragment extends SherlockListFragment implements
             } else {
                 buttonImdb.setVisibility(View.GONE);
             }
-
-            // Trailer button
-            // View buttonTrailer = view.findViewById(R.id.buttonTrailer);
-            // if (item.trailer != null && item.trailer.length() != 0) {
-            // buttonTrailer.setOnClickListener(new OnClickListener() {
-            // @Override
-            // public void onClick(View v) {
-            // Intent myIntent = new Intent(Intent.ACTION_VIEW,
-            // Uri.parse(item.trailer));
-            // getContext().startActivity(myIntent);
-            // }
-            // });
-            // } else {
-            // buttonTrailer.setVisibility(View.GONE);
-            // }
 
             ImageView imageView = (ImageView) view.findViewById(R.id.fanart);
             if (!TextUtils.isEmpty(item.backdrop_path)) {

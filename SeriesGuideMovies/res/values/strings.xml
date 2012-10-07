@@ -30,6 +30,10 @@
 
     <!-- Movie details -->
     <string name="details_empty">No details here.</string>
+    <string name="releasedate">Release Date</string>
+    <string name="runtime">Runtime</string>
+    <string name="timeunit">%s min</string>
+    <string name="votes">%s votes</string>
     <string name="actors">Actors</string>
     <string name="crew">Crew</string>
     <string name="addtocalendar">Add to calendar</string>

@@ -47,6 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="@string/checkin" />
+
         </LinearLayout>
 
         <TextView
@@ -57,13 +58,57 @@
             android:paddingBottom="@dimen/default_padding"
             android:text="@string/details_empty"
             android:textAppearance="@style/TextAppearance" />
+			
+		<RatingBar
+			android:id="@+id/ratingBar"
+			style="?android:attr/ratingBarStyleSmall"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:isIndicator="true"
+			android:layout_below="@+id/description"
+			android:numStars="10"
+			android:stepSize="0.1" />
+			
+		<TextView
+            android:id="@+id/votes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ratingBar" />
+
+        <TextView
+            android:id="@+id/labelReleaseDate"
+            style="@style/Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/votes"
+            android:text="@string/releasedate" />
+
+        <TextView
+            android:id="@+id/releaseDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelReleaseDate" />
+
+        <TextView
+            android:id="@+id/labelRuntime"
+            style="@style/Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/releaseDate"
+            android:text="@string/runtime" />
+
+        <TextView
+            android:id="@+id/runtime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelRuntime" />
 
         <TextView
             android:id="@+id/labelActors"
             style="@style/Label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/description"
+            android:layout_below="@+id/runtime"
             android:text="@string/actors" />
 
         <TextView
