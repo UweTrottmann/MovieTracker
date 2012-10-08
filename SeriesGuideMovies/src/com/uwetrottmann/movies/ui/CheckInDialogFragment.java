@@ -17,11 +17,13 @@
 
 package com.uwetrottmann.movies.ui;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,6 +36,9 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.uwetrottmann.androidutils.AndroidUtils;
 import com.uwetrottmann.movies.R;
+import com.uwetrottmann.movies.getglueapi.GetGlue;
+import com.uwetrottmann.movies.getglueapi.GetGlue.CheckInTask;
+import com.uwetrottmann.movies.getglueapi.GetGlueAuthActivity;
 import com.uwetrottmann.movies.util.TraktCredentialsDialogFragment;
 import com.uwetrottmann.movies.util.TraktTask;
 import com.uwetrottmann.movies.util.Utils;
@@ -72,17 +77,20 @@ public class CheckInDialogFragment extends SherlockDialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // hide title
+        setStyle(STYLE_NO_TITLE, 0);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final View layout = inflater.inflate(R.layout.checkin_dialog, null);
         final SharedPreferences prefs = PreferenceManager
                 .getDefaultSharedPreferences(getSherlockActivity());
 
-        getDialog().setTitle(R.string.checkin);
-        final View layout = inflater.inflate(R.layout.checkin_dialog, null);
-
+        // some required values
         final String imdbId = getArguments().getString(InitBundle.IMDBID);
+        final String title = getArguments().getString(InitBundle.TITLE);
 
         // get share service enabled settings
         mGetGlueChecked = prefs.getBoolean(AppPreferences.KEY_SHAREWITHGETGLUE, false);
@@ -92,8 +100,7 @@ public class CheckInDialogFragment extends SherlockDialogFragment {
         mMessageBox = (EditText) layout.findViewById(R.id.message);
 
         // Paste title button
-        final String title = getArguments().getString(InitBundle.TITLE);
-        layout.findViewById(R.id.pasteTitle).setOnClickListener(new OnClickListener() {
+        layout.findViewById(R.id.paste).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 int start = mMessageBox.getSelectionStart();
@@ -103,8 +110,42 @@ public class CheckInDialogFragment extends SherlockDialogFragment {
             }
         });
 
+        // Clear button
+        layout.findViewById(R.id.textViewClear).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMessageBox.setText(null);
+            }
+        });
+
         // GetGlue toggle
-        // TODO
+        mToggleGetGlueButton = (CompoundButton) layout.findViewById(R.id.toggleGetGlue);
+        mToggleGetGlueButton.setChecked(mGetGlueChecked);
+        mToggleGetGlueButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    if (!GetGlue.isAuthenticated(prefs)) {
+                        if (!AndroidUtils.isNetworkConnected(getActivity())) {
+                            Toast.makeText(getActivity(), R.string.offline, Toast.LENGTH_LONG)
+                                    .show();
+                            buttonView.setChecked(false);
+                            return;
+                        } else {
+                            // authenticate already here
+                            Intent i = new Intent(getSherlockActivity(),
+                                    GetGlueAuthActivity.class);
+                            startActivity(i);
+                        }
+                    }
+                }
+
+                mGetGlueChecked = isChecked;
+                prefs.edit().putBoolean(AppPreferences.KEY_SHAREWITHGETGLUE, isChecked)
+                        .commit();
+                updateCheckInButtonState();
+            }
+        });
 
         // trakt toggle
         mToggleTraktButton = (CompoundButton) layout.findViewById(R.id.toggleTrakt);
@@ -133,9 +174,10 @@ public class CheckInDialogFragment extends SherlockDialogFragment {
         mCheckinButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (imdbId == null || imdbId.length() == 0) {
+                if (TextUtils.isEmpty(imdbId)) {
                     return;
                 }
+
                 if (!AndroidUtils.isNetworkConnected(getActivity())) {
                     Toast.makeText(getActivity(), R.string.offline, Toast.LENGTH_LONG).show();
                     return;
@@ -144,18 +186,17 @@ public class CheckInDialogFragment extends SherlockDialogFragment {
                 final String message = mMessageBox.getText().toString();
 
                 if (mGetGlueChecked) {
-                    // TODO
-                    // if (!GetGlue.isAuthenticated(prefs)) {
-                    // // cancel if required auth data is missing
-                    // mToggleGetGlueButton.setChecked(false);
-                    // mGetGlueChecked = false;
-                    // updateCheckInButtonState();
-                    // return;
-                    // } else {
-                    // // check in
-                    // new CheckInTask(imdbid, message,
-                    // getActivity()).execute();
-                    // }
+                    if (!GetGlue.isAuthenticated(prefs)) {
+                        // cancel if required auth data is missing
+                        mToggleGetGlueButton.setChecked(false);
+                        mGetGlueChecked = false;
+                        updateCheckInButtonState();
+                        return;
+                    } else {
+                        // check in, use task on thread pool
+                        AndroidUtils.executeAsyncTask(new CheckInTask(imdbId, message,
+                                getActivity()), new Void[] {});
+                    }
                 }
 
                 if (mTraktChecked) {
@@ -180,8 +221,11 @@ public class CheckInDialogFragment extends SherlockDialogFragment {
                         newFragment.show(ft, "progress-dialog");
 
                         // start the trakt check in task
-                        new TraktTask(getActivity(), getFragmentManager(), null).checkin(imdbId,
-                                message).execute();
+                        AndroidUtils.executeAsyncTask(new TraktTask(getActivity(),
+                                getFragmentManager(), null).checkin(imdbId,
+                                message), new Void[] {
+                                null
+                        });
                     }
                 }
 

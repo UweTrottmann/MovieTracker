@@ -44,10 +44,15 @@
     <!-- Check Ins -->
     <string name="checkin">Check In</string>
     <string name="checkin_hint">Type a message (optional)</string>
-    <string name="paste_title">Paste title</string>
+    <string name="paste">Paste title</string>
+    <string name="clear">Clear</string>
     <string name="traktcheckin_inprogress">You are already checked into another movie or episode. Either override the previous checkin or wait %s and try again.</string>
     <string name="traktcheckin_cancel">Override</string>
     <string name="traktcheckin_wait">I\'ll wait</string>
+    <string name="checkinsuccess">Checked into %s on GetGlue.</string>
+    <string name="checkinfailed">GetGlue Check-in failed. Try disconnecting GetGlue.</string>
+    <string name="getglue_authfailed">GetGlue authentication failed. Try again later.</string>
+    <string name="oauthmessage">Authenticating to GetGlue</string>
 
     <!-- Ratings -->
     <plurals name="votes">

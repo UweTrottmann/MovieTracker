@@ -85,4 +85,29 @@
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
+    <style name="Widget"></style>
+
+    <style name="Widget.MovieGuide" parent="Widget"></style>
+
+    <!-- Buttons -->
+    <style name="Widget.MovieGuide.Button">
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+        <item name="android:background">@drawable/btn_default_movieguide</item>
+        <item name="android:textAppearance">@style/TextAppearance.Medium</item>
+        <item name="android:minHeight">48dip</item>
+        <item name="android:minWidth">64dip</item>
+    </style>
+
+    <style name="Widget.MovieGuide.Button.Borderless">
+        <item name="android:background">@drawable/selectable_background_seriesguidemoviestheme</item>
+        <item name="android:paddingLeft">4dip</item>
+        <item name="android:paddingRight">4dip</item>
+    </style>
+
+    <style name="Widget.MovieGuide.Button.Borderless.Small">
+        <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
+
 </resources>

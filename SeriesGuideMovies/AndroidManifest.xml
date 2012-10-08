@@ -34,6 +34,8 @@
         </activity>
         <activity android:name=".ui.MovieDetailsActivity" >
         </activity>
+        <activity android:name=".getglueapi.GetGlueAuthActivity" >
+        </activity>
 
         <!-- Content provider -->
         <provider

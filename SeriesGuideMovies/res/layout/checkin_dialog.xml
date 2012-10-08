@@ -1,40 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-     Copyright 2012 Uwe Trottmann
-
-     Licensed under the Apache License, Version 2.0 (the "License");
-     you may not use this file except in compliance with the License.
-     You may obtain a copy of the License at
-
-          http://www.apache.org/licenses/LICENSE-2.0
-
-     Unless required by applicable law or agreed to in writing, software
-     distributed under the License is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     See the License for the specific language governing permissions and
-     limitations under the License.
--->
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:padding="@dimen/large_padding" >
 
-    <TextView
-        android:id="@+id/pasteTitle"
+    <Button
+        android:id="@+id/paste"
+        style="@style/Widget.MovieGuide.Button.Borderless.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/list_selector_holo_dark"
-        android:clickable="true"
-        android:focusable="true"
         android:padding="@dimen/default_padding"
-        android:text="@string/paste_title"
-        android:textSize="@dimen/text_size_small" />
+        android:text="@string/paste" />
+
+    <Button
+        android:id="@+id/textViewClear"
+        style="@style/Widget.MovieGuide.Button.Borderless.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/paste"
+        android:padding="@dimen/default_padding"
+        android:text="@string/clear" />
 
     <EditText
         android:id="@+id/message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/pasteTitle"
+        android:layout_below="@+id/paste"
         android:gravity="top"
         android:hint="@string/checkin_hint"
         android:inputType="textMultiLine"
