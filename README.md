@@ -6,7 +6,7 @@ This GitHub repository hosts the code for the Android app MovieTracker.
 Branch structure
 ----------------
 
-The repository is made up of three main development branches: master (stable), beta and dev.
+The repository is made up of two main development branches: master (stable) and dev.
 
 * **master** has the latest stable code, its tags are released as the stable version.
 * **dev** includes the latest unstable code, no releases are made of it.
