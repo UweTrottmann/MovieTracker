@@ -1,7 +1,7 @@
-SeriesGuide Movies (preliminary name)
+MovieTracker
 ========================
 
-This GitHub repository hosts the code for the Android app SeriesGuide movies.
+This GitHub repository hosts the code for the Android app MovieTracker.
 
 Branch structure
 ----------------
@@ -9,7 +9,6 @@ Branch structure
 The repository is made up of three main development branches: master (stable), beta and dev.
 
 * **master** has the latest stable code, its tags are released as the stable version.
-* **beta** is somewhat stable and contains new features early. Its tags are released as beta.
 * **dev** includes the latest unstable code, no releases are made of it.
 
 Contributing
