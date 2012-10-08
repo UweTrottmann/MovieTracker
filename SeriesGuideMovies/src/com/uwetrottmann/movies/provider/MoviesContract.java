@@ -48,7 +48,7 @@ public class MoviesContract {
         String CERTIFICATION = "movie_certification";
 
         String IMDBID = "movie_imdbid";
-        
+
         String TMDBID = "movie_tmdbid";
 
         String POSTER = "movie_poster";

@@ -17,16 +17,6 @@
 
 package com.uwetrottmann.movies.util;
 
-import com.actionbarsherlock.app.SherlockDialogFragment;
-import com.jakewharton.apibuilder.ApiException;
-import com.jakewharton.trakt.ServiceManager;
-import com.jakewharton.trakt.TraktException;
-import com.jakewharton.trakt.entities.Response;
-import com.uwetrottmann.androidutils.AndroidUtils;
-import com.uwetrottmann.movies.R;
-import com.uwetrottmann.movies.entities.TraktStatus;
-import com.uwetrottmann.movies.ui.AppPreferences;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -42,6 +32,16 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.actionbarsherlock.app.SherlockDialogFragment;
+import com.jakewharton.apibuilder.ApiException;
+import com.jakewharton.trakt.ServiceManager;
+import com.jakewharton.trakt.TraktException;
+import com.jakewharton.trakt.entities.Response;
+import com.uwetrottmann.androidutils.AndroidUtils;
+import com.uwetrottmann.movies.R;
+import com.uwetrottmann.movies.entities.TraktStatus;
+import com.uwetrottmann.movies.ui.AppPreferences;
 
 /**
  * Dialog to gather and verify as well as clear trakt.tv credentials.

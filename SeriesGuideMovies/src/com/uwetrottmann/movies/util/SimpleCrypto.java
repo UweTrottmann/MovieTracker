@@ -17,11 +17,11 @@
 
 package com.uwetrottmann.movies.util;
 
-import com.uwetrottmann.movies.ui.AppPreferences;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+
+import com.uwetrottmann.movies.ui.AppPreferences;
 
 import java.security.SecureRandom;
 

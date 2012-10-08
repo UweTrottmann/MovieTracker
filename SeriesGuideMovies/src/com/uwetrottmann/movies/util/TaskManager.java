@@ -17,10 +17,10 @@
 
 package com.uwetrottmann.movies.util;
 
-import com.uwetrottmann.movies.R;
-
 import android.content.Context;
 import android.widget.Toast;
+
+import com.uwetrottmann.movies.R;
 
 public class TaskManager {
 

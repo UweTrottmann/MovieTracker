@@ -17,10 +17,10 @@
 
 package com.uwetrottmann.movies.ui;
 
+import android.content.Intent;
+
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
-
-import android.content.Intent;
 
 public class BaseActivity extends SherlockFragmentActivity {
 

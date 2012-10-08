@@ -17,13 +17,13 @@
 
 package com.uwetrottmann.movies.ui;
 
-import com.uwetrottmann.movies.R;
-
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.uwetrottmann.movies.R;
 
 public class ProgressDialog extends DialogFragment {
 

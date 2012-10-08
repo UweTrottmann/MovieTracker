@@ -109,7 +109,7 @@ public class GetGlue {
             if (!AndroidUtils.isNetworkConnected(mContext)) {
                 return CHECKIN_OFFLINE;
             }
-            
+
             // Encode only whitespaces
             mComment = mComment.replace(" ", "%20");
 
