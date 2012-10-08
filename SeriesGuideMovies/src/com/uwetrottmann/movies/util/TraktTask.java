@@ -17,6 +17,15 @@
 
 package com.uwetrottmann.movies.util;
 
+import android.content.Context;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
+import android.widget.Toast;
+
 import com.jakewharton.apibuilder.ApiException;
 import com.jakewharton.trakt.ServiceManager;
 import com.jakewharton.trakt.TraktException;
@@ -27,15 +36,6 @@ import com.uwetrottmann.androidutils.AndroidUtils;
 import com.uwetrottmann.movies.R;
 import com.uwetrottmann.movies.entities.TraktStatus;
 import com.uwetrottmann.movies.ui.CancelCheckInDialogFragment;
-
-import android.content.Context;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
-import android.widget.Toast;
 
 public class TraktTask extends AsyncTask<Void, Void, Response> {
 
@@ -256,7 +256,7 @@ public class TraktTask extends AsyncTask<Void, Void, Response> {
 
                 // all good
                 Toast.makeText(mContext,
-                        mContext.getString(R.string.trakt_success) + ": " + r.message,
+                        r.message + " " + mContext.getString(R.string.ontrakt),
                         Toast.LENGTH_SHORT).show();
 
                 if (mListener != null) {

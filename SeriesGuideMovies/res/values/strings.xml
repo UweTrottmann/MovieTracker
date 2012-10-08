@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">SeriesGuide movies</string>
     <string name="description_poster">Movie poster</string>
     <string name="search_hint">Search movies</string>
     <string name="menu_update">Update</string>
     <string name="menu_login">trakt account</string>
-    <string name="powered_by_trakt">powered by trakt.tv</string>
     <string name="offline">No network connectivity. Try again later.</string>
-    <string name="trakt">trakt</string>
-    <string name="getglue">GetGlue</string>
-    <string name="imdb">IMDb</string>
     <string name="seen">Seen</string>
     <string name="collect">Collected</string>
-    <string name="sending">Sending…</string>
     <string name="update_inprogress">Already updating, try again later.</string>
 
     <!-- Movie lists -->
@@ -33,7 +27,6 @@
     <string name="releasedate">Release Date</string>
     <string name="runtime">Runtime</string>
     <string name="timeunit">%s min</string>
-    <string name="votes">%s votes</string>
     <string name="actors">Cast</string>
     <string name="cast_as">as</string>
     <string name="crew">Crew</string>
@@ -61,7 +54,7 @@
     </plurals>
 
     <!-- Sharing -->
-    <string name="trakt_success">Success with trakt</string>
+    <string name="ontrakt">on trakt</string>
 
     <!-- Settings -->
     <string name="pref_traktcredentials">trakt.tv credentials</string>
@@ -79,6 +72,11 @@
     <string name="update_failure">Update failed, try again later.</string>
 
     <!-- DO NOT TRANSLATE -->
+    <string name="app_name">SeriesGuide movies</string>
+    <string name="trakt">trakt</string>
+    <string name="getglue">GetGlue</string>
+    <string name="imdb">IMDb</string>
+    <string name="powered_by_trakt">powered by themoviedb.org</string>
     <string name="notraktrating">--%</string>
 
 </resources>

@@ -17,15 +17,6 @@
 
 package com.uwetrottmann.movies.ui;
 
-import com.jakewharton.apibuilder.ApiException;
-import com.jakewharton.trakt.ServiceManager;
-import com.jakewharton.trakt.TraktException;
-import com.jakewharton.trakt.entities.Response;
-import com.uwetrottmann.movies.R;
-import com.uwetrottmann.movies.entities.TraktStatus;
-import com.uwetrottmann.movies.util.TraktTask;
-import com.uwetrottmann.movies.util.Utils;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -40,6 +31,15 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.jakewharton.apibuilder.ApiException;
+import com.jakewharton.trakt.ServiceManager;
+import com.jakewharton.trakt.TraktException;
+import com.jakewharton.trakt.entities.Response;
+import com.uwetrottmann.movies.R;
+import com.uwetrottmann.movies.entities.TraktStatus;
+import com.uwetrottmann.movies.util.TraktTask;
+import com.uwetrottmann.movies.util.Utils;
 
 public class CancelCheckInDialogFragment extends DialogFragment {
 
@@ -116,7 +116,7 @@ public class CancelCheckInDialogFragment extends DialogFragment {
                         if (r.status.equalsIgnoreCase(TraktStatus.SUCCESS)) {
                             // all good
                             Toast.makeText(context,
-                                    context.getString(R.string.trakt_success) + ": " + r.message,
+                                    r.message + " " + context.getString(R.string.ontrakt),
                                     Toast.LENGTH_SHORT).show();
 
                             // relaunch the trakt task which called us to
