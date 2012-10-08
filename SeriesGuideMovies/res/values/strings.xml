@@ -72,7 +72,7 @@
     <string name="update_failure">Update failed, try again later.</string>
 
     <!-- DO NOT TRANSLATE -->
-    <string name="app_name">SeriesGuide movies</string>
+    <string name="app_name">MovieTracker</string>
     <string name="trakt">trakt</string>
     <string name="getglue">GetGlue</string>
     <string name="imdb">IMDb</string>
