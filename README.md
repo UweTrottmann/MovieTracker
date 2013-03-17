@@ -1,5 +1,9 @@
+Development halted
+==================
+**2013-03-17** This project has been merged with [SeriesGuide](https://github.com/UweTrottmann/SeriesGuide) and will receive no further updates.
+
 MovieTracker
-========================
+============
 
 This GitHub repository hosts the code for the Android app MovieTracker.
 
