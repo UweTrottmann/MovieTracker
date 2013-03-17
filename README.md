@@ -19,7 +19,7 @@ Want to contribute? Great! Fork the repository, code, tell me about it!
 To setup your environment clone the repository. Then import the three projects SeriesGuide, ActionBarSherlock and ViewPagerIndicator into eclipse. To successfully build, you should create a keys.xml file in the SeriesGuideMovies/res/values folder and add the string values 
 
     <resources>
-        <string name="tvdb_apikey"></string>
+        <string name="tmdb_apikey"></string>
         <string name="getglue_consumer_key"></string>
         <string name="getglue_consumer_secret"></string>
         <string name="trakt_apikey"></string>
